@@ -1936,11 +1936,10 @@ do
 		local r = Args[2]
 		if States.Admined and r then
 			table.remove(States.Admined,table.find(States.Admined,r.Name))
-			Notif("Unadmined "..r.Name)
 		else
 			NotFound()
 		end
-	end,"Admins a player","PLAYER_COMMAND")
+	end,"Unadmins a player","PLAYER_COMMAND")
 	Add_Command("bring",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
