@@ -3446,4 +3446,4 @@ refresh()
 plr.PlayerGui.Home.fadeFrame.Visible = false--//black bar
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 Notif("Loaded! type !noinvite to disable discord invite",3)
-Notif("Welcome to Net Admin / Tiger admin Source")
+Notif("Welcome to Net Admin / Tiger admin Source",5)
