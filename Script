@@ -1642,6 +1642,52 @@ do
 			end)
 		end
 	end,"Attempts to shutdown the server")
+	Add_Command("disconnect",function(Args)
+		Notif("Attemping to crash the server.",5)
+		local Args = GetArgs(Args)
+		local Args = {}
+		for i =1,100 do
+			Args[#Args+1] = { --//shot my gun and got remote so why not
+				["RayObject"] = Ray.new(Vector3.new(943.0889282226562, 101.4899673461914, 2457.429931640625), Vector3.new(749.2162475585938, 116.06295013427734, 255.35150146484375)), 
+				["Distance"] = 100, 
+				["Cframe"] = CFrame.new(947.794922, 101.702385, 2458.55518, 0.632757664, -0.356117994, 0.687602937, 1.49011612e-08, 0.887974501, 0.459892809, -0.774349988, -0.291000694, 0.561872602), 
+				["Hit"] = game:GetService("Workspace")["Prison_Cellblock"]["a_front"].Part
+			}
+		end
+		local Return = false
+		local Gun = nil
+		task.spawn(function()
+			Gun = plr.Backpack.ChildAdded:Wait()
+		end)
+		GetGun("M9")
+		repeat task.wait() until Gun
+		task.spawn(function()
+			repeat task.wait() until not plr.Character:FindFirstChild("M9") and not plr.Backpack:FindFirstChild("M9")
+			Return = true
+			Execute_Command("!crashserver","!crashserver")
+			return
+		end)
+		for i =1,10000 do
+			task.spawn(function()
+				game:GetService("ReplicatedStorage").ShootEvent:FireServer(Args,Gun)
+			end)
+			game:GetService("RunService").RenderStepped:Wait()
+		end
+		while task.wait(4) do
+			if Return then
+				break
+			end
+			task.spawn(function()
+				if Gun then
+					for i =1,5 do
+						task.spawn(function()
+							game:GetService("ReplicatedStorage").ShootEvent:FireServer(Args, Gun)
+						end)
+					end
+				end
+			end)
+		end
+	end,"Attempts to shutdown the server")
 	Add_Command("re",function(Args)
 		local Args = GetArgs(Args)
 		Execute_Command("!refresh","!refresh")
@@ -1771,7 +1817,7 @@ do
 		end
 		Notif("users: "..tostring(table.concat(Concat)),5)
 	end,"Shows all tiger admin users")
-	Add_Command("loopkill", "lk",function(Args)
+	Add_Command("loopkill",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1792,7 +1838,28 @@ do
 			NotFound()
 		end
 	end,"loop kills a player","PLAYER_COMMAND")
-	Add_Command("unloopkill","unlk",function(Args)
+		Add_Command("lk",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if Args[2]=="all" then
+			task.spawn(function()
+				if Temp.LkAll==false then
+					Temp.LkAll = true
+					repeat wait()
+						Kill_All()
+					until Temp.LkAll == nil
+				end
+			end)
+			return
+		end
+		if r then
+			loopkilling[#loopkilling+1]=r.Name
+			Notif("loop killing "..r.Name)
+		else
+			NotFound()
+		end
+	end,"loop kills a player","PLAYER_COMMAND")
+	Add_Command("unloopkill",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1807,7 +1874,22 @@ do
 			NotFound()
 		end
 	end,"unloop kills a player","PLAYER_COMMAND")
-	Add_Command("whitelist","wl",function(Args)
+	Add_Command("unlk",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if Args[2]=="all" then
+			Notif("Unloop killed all")
+			Temp.LkAll = nil
+			return
+		end
+		if r then
+			table.remove(loopkilling,table.find(loopkilling,r.Name))
+			Notif("unlooped "..r.Name)
+		else
+			NotFound()
+		end
+	end,"unloop kills a player","PLAYER_COMMAND")
+	Add_Command("whitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1817,7 +1899,17 @@ do
 			NotFound()
 		end
 	end,"Cant harm that player with commands","PLAYER_COMMAND")
-	Add_Command("unwhitelist","unwl",function(Args)
+	Add_Command("wl",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			Whitelisted[#Whitelisted+1]=r.Name
+			Notif("whitelisted "..r.Name)
+		else
+			NotFound()
+		end
+	end,"Cant harm that player with commands","PLAYER_COMMAND")
+	Add_Command("unwhitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1827,7 +1919,17 @@ do
 			NotFound()
 		end
 	end,"unwhitelists a player","PLAYER_COMMAND")
-	Add_Command("admin",rank,function(Args)
+	Add_Command("unwl",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			table.remove(Whitelisted,table.find(Whitelisted,r.Name))
+			Notif("unwhitelisted "..r.Name)
+		else
+			NotFound()
+		end
+	end,"unwhitelists a player","PLAYER_COMMAND")
+	Add_Command("admin","rank",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
