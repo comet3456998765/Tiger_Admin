@@ -59,7 +59,7 @@ end
 do
 	--Tables
 	States = {
-		autore = false
+		autore = false,
 		KillAura = false,
 		SilentAim = true,
 		AntiPunch = false,
@@ -1596,7 +1596,7 @@ do
 			until Done
 		end)
 	end,"Brings a car to your location")
-	Add_Command("crashserver",function(Args)
+	Add_Command("crashserver", "disconnect",function(Args)
 		Notif("Attemping to crash the server.",5)
 		local Args = GetArgs(Args)
 		local Args = {}
@@ -1721,10 +1721,10 @@ do
 			wait()
 			workspace.CurrentCamera.CameraSubject = plr.Character:FindFirstChildOfClass("Humanoid")
 		end
-		Notif("Tiger admin is now unloaded, see you soon!")
+		Notif("Net Hub admin is now unloaded, see you soon!")
 	end,"Unloads everything")
 
-	Add_Command("kill",function(Args)
+	Add_Command("kill", "k",function(Args)
 		local Args = GetArgs(Args)
 		local Check1 = function(ar)
 			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
@@ -1771,7 +1771,7 @@ do
 		end
 		Notif("users: "..tostring(table.concat(Concat)),5)
 	end,"Shows all tiger admin users")
-	Add_Command("loopkill",function(Args)
+	Add_Command("loopkill", "lk",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1792,7 +1792,7 @@ do
 			NotFound()
 		end
 	end,"loop kills a player","PLAYER_COMMAND")
-	Add_Command("unloopkill",function(Args)
+	Add_Command("unloopkill", "unlk",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1807,7 +1807,7 @@ do
 			NotFound()
 		end
 	end,"unloop kills a player","PLAYER_COMMAND")
-	Add_Command("whitelist",function(Args)
+	Add_Command("whitelist", "wl",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1817,7 +1817,7 @@ do
 			NotFound()
 		end
 	end,"Cant harm that player with commands","PLAYER_COMMAND")
-	Add_Command("unwhitelist",function(Args)
+	Add_Command("unwhitelist", "unwl",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1827,7 +1827,7 @@ do
 			NotFound()
 		end
 	end,"unwhitelists a player","PLAYER_COMMAND")
-	Add_Command("admin",function(Args)
+	Add_Command("admin", "rank",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1936,6 +1936,7 @@ do
 		local r = Args[2]
 		if States.Admined and r then
 			table.remove(States.Admined,table.find(States.Admined,r.Name))
+			Notif("Admin removed")
 		else
 			NotFound()
 		end
@@ -1980,14 +1981,14 @@ do
 			end
 		end
 	end,"Brings a player to the void","PLAYER_COMMAND")
-	Add_Command("jump",function(Args)
+	Add_Command("jump", "jp",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if r and tonumber(r) then
 			plr.Character:FindFirstChildOfClass("Humanoid").JumpPower = r
 		end
 	end,"jumppower what else do you think","NUMBER_COMMAND")
-	Add_Command("speed",function(Args)
+	Add_Command("speed", "sd",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if r and tonumber(r) then
@@ -2158,7 +2159,7 @@ do
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"autore")
 	end,"",true)
-	Add_Command("antibring",function(Args)
+	Add_Command("antibring", "antiget",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"Antibring")
 	end,"No exploiter can bring you","TOGGLE_COMMAND")
@@ -3219,7 +3220,7 @@ function AdminChatted(Text,Speaker)
 			NotFound()
 		end
 	end
-	if commandPLAYER("loopkill") then
+	if commandPLAYER("loopkill", "lk") then
 		local r = FindPlayer(Arg2_P)
 		if Arg2_P=="all" then
 			task.spawn(function()
@@ -3249,7 +3250,7 @@ function AdminChatted(Text,Speaker)
 			tase(r)
 		end
 	end
-	if commandPLAYER("unloopkill") then
+	if commandPLAYER("unloopkill", "unlk") then
 		local r = FindPlayer(Arg2_P)
 		if Arg2_P=="all" then
 			Notif("Unloop killed all")
@@ -3263,7 +3264,7 @@ function AdminChatted(Text,Speaker)
 			NotFound()
 		end
 	end
-	if commandPLAYER("bring") then
+	if commandPLAYER("bring", "get") then
 		local r = FindPlayer(Arg2_P)
 		if r then
 			if r.Character:FindFirstChildOfClass("Humanoid") and r.Character:FindFirstChildOfClass("Humanoid").Health <1 then
@@ -3343,3 +3344,5 @@ refresh()
 plr.PlayerGui.Home.fadeFrame.Visible = false--//black bar
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 Notif("Loaded! type !noinvite to disable discord invite",3)
+wait(3)
+Notif("Welcome to Net Hub Admin",5)
