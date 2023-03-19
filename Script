@@ -1977,7 +1977,7 @@ do
 	Add_Command("unrank",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!unadmin","!unadmin")
-	end
+	end)
 	Add_Command("bring",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
@@ -2001,7 +2001,7 @@ do
 	Add_Command("get",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!bring","!bring")
-	end
+	end)
 	Add_Command("void",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
@@ -2032,7 +2032,7 @@ do
 	Add_Command("jp",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!jump","!jump")
-	end
+	end)
 	Add_Command("speed",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
@@ -2043,7 +2043,7 @@ do
 	Add_Command("sd",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!speed","!speed")
-	end
+	end)
 	Add_Command("goto",function(Args)
 		local Args = GetArgs(Args)
 		local r = FindPlayer(Args[2])
@@ -2056,11 +2056,11 @@ do
 	Add_Command("to",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!goto","!goto")
-	end
+	end)
 	Add_Command("go",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!goto","!goto")
-	end
+	end)
 	Add_Command("clickkill",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"ClickKill")
