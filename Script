@@ -1496,7 +1496,7 @@ do
 		local Args = GetArgs(Args)
 		keycard()
 	end,"true",true)
-	Add_Command("btools",function(Args)
+	Add_Command("btools", "bt",function(Args)
 		local Args = GetArgs(Args)
 		Instance.new("HopperBin",plr.Backpack).BinType = 3
 		Instance.new("HopperBin",plr.Backpack).BinType = 4
@@ -1941,7 +1941,7 @@ do
 			NotFound()
 		end
 	end,"Unadmins a player","PLAYER_COMMAND")
-	Add_Command("bring",function(Args)
+	Add_Command("bring", "get",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
 			local pos = getpos()
