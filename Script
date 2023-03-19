@@ -1496,7 +1496,12 @@ do
 		local Args = GetArgs(Args)
 		keycard()
 	end,"true",true)
-	Add_Command("btools", "bt",function(Args)
+	Add_Command("btools",function(Args)
+		local Args = GetArgs(Args)
+		Instance.new("HopperBin",plr.Backpack).BinType = 3
+		Instance.new("HopperBin",plr.Backpack).BinType = 4
+	end,"client sided btools that you can only see")
+	dd_Command("bt",function(Args)
 		local Args = GetArgs(Args)
 		Instance.new("HopperBin",plr.Backpack).BinType = 3
 		Instance.new("HopperBin",plr.Backpack).BinType = 4
@@ -1596,7 +1601,7 @@ do
 			until Done
 		end)
 	end,"Brings a car to your location")
-	Add_Command("crashserver", "disconnect",function(Args)
+	Add_Command("crashserver",function(Args)
 		Notif("Attemping to crash the server.",5)
 		local Args = GetArgs(Args)
 		local Args = {}
@@ -1642,6 +1647,10 @@ do
 			end)
 		end
 	end,"Attempts to shutdown the server")
+	Add_Command("disconnect",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!crashserver","!crashserver")
+	end
 	Add_Command("re",function(Args)
 		local Args = GetArgs(Args)
 		Execute_Command("!refresh","!refresh")
@@ -1724,7 +1733,7 @@ do
 		Notif("Net Hub admin is now unloaded, see you soon!")
 	end,"Unloads everything")
 
-	Add_Command("kill", "k",function(Args)
+	Add_Command("kill",function(Args)
 		local Args = GetArgs(Args)
 		local Check1 = function(ar)
 			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
@@ -1751,6 +1760,10 @@ do
 			Notif("Missing arg2 !kill player")
 		end
 	end,"kills a player","PLAYER_COMMAND")
+	Add_Command("k",function(Args)
+		local Args = GetArgs(Args)
+		Execute_Command("!kill","!kill")
+	end,"Kills a player")
 	Add_Command("serverhop",function(Args)
 		local Args = GetArgs(Args)
 		local Ids = {}
@@ -1771,7 +1784,7 @@ do
 		end
 		Notif("users: "..tostring(table.concat(Concat)),5)
 	end,"Shows all tiger admin users")
-	Add_Command("loopkill", "lk",function(Args)
+	Add_Command("loopkill",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1792,7 +1805,11 @@ do
 			NotFound()
 		end
 	end,"loop kills a player","PLAYER_COMMAND")
-	Add_Command("unloopkill", "unlk",function(Args)
+	Add_Command("lk",function(Args)
+		local Args = GetArgs(Args)
+		Execute_Command("!loopkill","!loopkill")
+	end
+	Add_Command("unloopkill",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1807,7 +1824,11 @@ do
 			NotFound()
 		end
 	end,"unloop kills a player","PLAYER_COMMAND")
-	Add_Command("whitelist", "wl",function(Args)
+	Add_Command("unlk",function(Args)
+		local Args = GetArgs(Args)
+		Execute_Command("!unloopkill","!unloopkill")
+	end
+	Add_Command("whitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1817,7 +1838,10 @@ do
 			NotFound()
 		end
 	end,"Cant harm that player with commands","PLAYER_COMMAND")
-	Add_Command("unwhitelist", "unwl",function(Args)
+	Add_Command("wl",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!whitelist","!whitelist")
+	Add_Command("unwhitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1827,7 +1851,11 @@ do
 			NotFound()
 		end
 	end,"unwhitelists a player","PLAYER_COMMAND")
-	Add_Command("admin", "rank",function(Args)
+	Add_Command("unwl",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!unwhitelist","!unwhitelist")
+	end
+	Add_Command("admin",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1838,6 +1866,10 @@ do
 			NotFound()
 		end
 	end,"Admins a player","PLAYER_COMMAND")
+	Add_Command("rank",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!admin","!admin")
+	end
 	Add_Command("laggun",function(Args)
 		local Args = GetArgs(Args)
 		if plr.Character:FindFirstChildOfClass("Tool") then
@@ -1941,7 +1973,11 @@ do
 			NotFound()
 		end
 	end,"Unadmins a player","PLAYER_COMMAND")
-	Add_Command("bring", "get",function(Args)
+	Add_Command("unrank",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!unadmin","!unadmin")
+	end
+	Add_Command("bring",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
 			local pos = getpos()
@@ -1961,6 +1997,10 @@ do
 			end
 		end
 	end,"Brings a player to you","PLAYER_COMMAND")
+	Add_Command("get",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!bring","!bring")
+	end
 	Add_Command("void",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
@@ -1981,20 +2021,28 @@ do
 			end
 		end
 	end,"Brings a player to the void","PLAYER_COMMAND")
-	Add_Command("jump", "jp",function(Args)
+	Add_Command("jump",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if r and tonumber(r) then
 			plr.Character:FindFirstChildOfClass("Humanoid").JumpPower = r
 		end
 	end,"jumppower what else do you think","NUMBER_COMMAND")
-	Add_Command("speed", "sd",function(Args)
+	Add_Command("jp",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!jump","!jump")
+	end
+	Add_Command("speed",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if r and tonumber(r) then
 			plr.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = r
 		end
 	end,"Speed what else do you think","NUMBER_COMMAND")
+	Add_Command("sd",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!speed","!speed")
+	end
 	Add_Command("goto",function(Args)
 		local Args = GetArgs(Args)
 		local r = FindPlayer(Args[2])
@@ -2004,6 +2052,14 @@ do
 			NotFound()
 		end
 	end,"teleports to a player")
+	Add_Command("to",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!goto","!goto")
+	end
+	Add_Command("go",function(Args)
+	        local Args = GetArgs(Args)
+		Execute_Command("!goto","!goto")
+	end
 	Add_Command("clickkill",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"ClickKill")
