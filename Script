@@ -1501,7 +1501,7 @@ do
 		Instance.new("HopperBin",plr.Backpack).BinType = 3
 		Instance.new("HopperBin",plr.Backpack).BinType = 4
 	end,"client sided btools that you can only see")
-	dd_Command("bt",function(Args)
+	Add_Command("bt",function(Args)
 		local Args = GetArgs(Args)
 		Instance.new("HopperBin",plr.Backpack).BinType = 3
 		Instance.new("HopperBin",plr.Backpack).BinType = 4
@@ -1650,7 +1650,7 @@ do
 	Add_Command("disconnect",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!crashserver","!crashserver")
-	end
+	end)
 	Add_Command("re",function(Args)
 		local Args = GetArgs(Args)
 		Execute_Command("!refresh","!refresh")
@@ -1808,7 +1808,7 @@ do
 	Add_Command("lk",function(Args)
 		local Args = GetArgs(Args)
 		Execute_Command("!loopkill","!loopkill")
-	end
+	end)
 	Add_Command("unloopkill",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
@@ -1827,7 +1827,7 @@ do
 	Add_Command("unlk",function(Args)
 		local Args = GetArgs(Args)
 		Execute_Command("!unloopkill","!unloopkill")
-	end
+	end)
 	Add_Command("whitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
@@ -1841,6 +1841,7 @@ do
 	Add_Command("wl",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!whitelist","!whitelist")
+	end)
 	Add_Command("unwhitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
@@ -1854,7 +1855,7 @@ do
 	Add_Command("unwl",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!unwhitelist","!unwhitelist")
-	end
+	end)
 	Add_Command("admin",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
@@ -1869,7 +1870,7 @@ do
 	Add_Command("rank",function(Args)
 	        local Args = GetArgs(Args)
 		Execute_Command("!admin","!admin")
-	end
+	end)
 	Add_Command("laggun",function(Args)
 		local Args = GetArgs(Args)
 		if plr.Character:FindFirstChildOfClass("Tool") then
