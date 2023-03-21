@@ -1451,6 +1451,17 @@ do
 			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
 		end
 	end,"Rejoins the server")
+	Add_Command("rj",function(Args)
+		local Args = GetArgs(Args)
+		Notif("Rejoining...")
+		wait(.3)
+		if #game:GetService("Players"):GetPlayers() ==1 then
+			game:GetService("Players").LocalPlayer:Kick("Please wait.")
+			game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+		else
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+		end
+	end,"Rejoins the server")
 	Add_Command("opendoors",function(Args)
 		local Args = GetArgs(Args)
 		local LastTeam =plr.TeamColor.Name
@@ -1563,11 +1574,11 @@ do
 		local Args = GetArgs(Args)
 		GetGun("Remington 870")
 	end,"Gets a shotgun")
-	Add_Command("rj",function(Args)
-		local Args = GetArgs(Args)
-		Execute_Command("!rejoin","!rejoin")
-	end,"true",true)
 	Add_Command("refresh",function(Args)
+		local Args = GetArgs(Args)
+		refresh()
+	end,"Respawns your character")
+	Add_Command("re",function(Args)
 		local Args = GetArgs(Args)
 		refresh()
 	end,"Respawns your character")
@@ -1693,10 +1704,6 @@ do
 			end)
 		end
 	end,"Attempts to shutdown the server")
-	Add_Command("re",function(Args)
-		local Args = GetArgs(Args)
-		Execute_Command("!refresh","!refresh")
-	end,"true",true,true,true)
 	Add_Command("godmode",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"Godmode")
@@ -3356,7 +3363,7 @@ function AdminChatted(Text,Speaker)
 	local TXT = string.lower(Text)
 	local SPLITED = TXT:split(" ")
 	Arg1_P = SPLITED[1]
-	local CmdsList = "[ADMIN]: !bring player, !cmds, !criminal player, !goto player, !kill [player,all], !fling [player], !car, !loopkill [player], !unloopkill [player], !tase [player,all]"
+	local CmdsList = "[ADMIN]: ,bring player, ,cmds, ,criminal player, ,goto player (,to player) (,go plater), ,kill [player,all], ,fling [player], ,car, ,loopkill [player] (,lk), ,unloopkill [player] (,unlk), ,tase [player,all]"
 	local Arg2_P = SPLITED[2]
 	local Arg3_P = SPLITED[3]
 	local Arg4_P = SPLITED[4]
