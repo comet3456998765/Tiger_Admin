@@ -1,6 +1,6 @@
 --[[
   _______ _____ _____ ______ _____             _____  __  __ _____ _   _ 
- |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE Modified By Net Hub V2
+ |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE Modified By Net Hub V5
     | |    | || |  __| |__  | |__) |    /  \  | |  | | \  / | | | |  \| |
     | |    | || | |_ |  __| |  _  /    / /\ \ | |  | | |\/| | | | | . ` |
     | |   _| || |__| | |____| | \ \   / ____ \| |__| | |  | |_| |_| |\  |
@@ -1974,7 +1974,7 @@ do
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say !cmds to get started!")
+			Msg(r,"You have been admined say ,cmds to get started! (Net Hub Adm)")
 		else
 			NotFound()
 		end
@@ -1985,7 +1985,7 @@ do
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say !cmds to get started!")
+			Msg(r,"You have been admined say ,cmds to get started! (Net Hub Adm)")
 		else
 			NotFound()
 		end
@@ -2089,6 +2089,7 @@ do
 		if States.Admined and r then
 			table.remove(States.Admined,table.find(States.Admined,r.Name))
 			Notif("Admin removed")
+			Msg(r,"Your admin as been removed")
 		else
 			NotFound()
 		end
@@ -2099,6 +2100,7 @@ do
 		if States.Admined and r then
 			table.remove(States.Admined,table.find(States.Admined,r.Name))
 			Notif("Admin removed")
+			Msg(r,"Your admin as been removed")
 		else
 			NotFound()
 		end
