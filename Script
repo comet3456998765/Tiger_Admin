@@ -1957,7 +1957,7 @@ do
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say !cmds to get started!")
+			Msg(r,"You have been admined say ,cmds to get started!")
 		else
 			NotFound()
 		end
@@ -1968,7 +1968,7 @@ do
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say !cmds to get started!")
+			Msg(r,"You have been admined say ,cmds to get started!")
 		else
 			NotFound()
 		end
