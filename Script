@@ -2391,6 +2391,10 @@ do
 		local Args = GetArgs(Args)
 		ChangeTeam(game.Teams.Guards)
 	end,"puts you into guards team")
+	Add_Command("g",function(Args)
+		local Args = GetArgs(Args)
+		ChangeTeam(game.Teams.Guards)
+	end,"puts you into guards team")
 	Add_Command("lag",function(Args)
 		local Args = GetArgs(Args)
 		GetGun("Remington 870")
@@ -2415,7 +2419,11 @@ do
 	Add_Command("inmate",function(Args)
 		local Args = GetArgs(Args)
 		ChangeTeam(game.Teams.Inmates)
-	end,"puts you into guards team")
+	end,"puts you into Inmates team")
+	Add_Command("i",function(Args)
+		local Args = GetArgs(Args)
+		ChangeTeam(game.Teams.Inmates)
+	end,"puts you into Inmates team")
 	Add_Command("noinvite",function(Args)
 		local Settings = {
 			Discord_Invite_On_Execution = false
@@ -2446,7 +2454,27 @@ do
 			MoveTo(pos)
 			MoveToJunk(crimpad)
 		end
-	end,"puts you into guards team")
+	end,"puts you into criminals team")
+	Add_Command("c",function(Args)
+		local Args = GetArgs(Args)
+		if Args[2] then
+			local r = FindPlayer(Args[2])
+			if r then
+				bring(r,nil,nil,"crim")
+			else
+				NotFound()
+			end
+		else
+			local pos = getpos()
+			local crimpad = workspace["Criminals Spawn"].SpawnLocation
+			crimpad.CanCollide = false
+			crimpad.Transparency = 1
+			repeat task.wait()crimpad.CFrame = getpos() until plr.Team == game.Teams.Criminals
+			wait()
+			MoveTo(pos)
+			MoveToJunk(crimpad)
+		end
+	end,"puts you into criminals team")
 	Add_Command("guns",function(Args)
 		local Args = GetArgs(Args)
 		All_Guns()
