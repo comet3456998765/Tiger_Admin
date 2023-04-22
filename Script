@@ -1,6 +1,6 @@
 --[[
   _______ _____ _____ ______ _____             _____  __  __ _____ _   _ 
- |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE
+ |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE V10
     | |    | || |  __| |__  | |__) |    /  \  | |  | | \  / | | | |  \| |
     | |    | || | |_ |  __| |  _  /    / /\ \ | |  | | |\/| | | | | . ` |
     | |   _| || |__| | |____| | \ \   / ____ \| |__| | |  | |_| |_| |\  |
@@ -3466,8 +3466,8 @@ function AdminChatted(Text,Speaker)
 	local TXT = string.lower(Text)
 	local SPLITED = TXT:split(" ")
 	Arg1_P = SPLITED[1]
-	local CmdsList = "[ADMIN]: ,bring player, ,cmds, ,criminal player, ,goto player, ,kill [player,all], ,fling [player], ,car, ,loopkill [player]"
-	local CmdsList2 = "[ADMIN]: ,unloopkill [player], ,tase [player,all], ,yard, ,crimbase, ,armory, ,prison, ,opendoors, ,cuffs [player] ©️By Net Hub (Main Developer)"
+	local CmdsList = "[Net Admin 🖥️]: ,bring player, ,cmds, ,criminal player, ,goto player, ,kill [player,all], ,fling [player], ,car, ,loopkill [player]"
+	local CmdsList2 = "[Net Admin 🖥️]: ,unloopkill [player], ,tase [player,all], ,yard, ,crimbase, ,armory, ,prison, ,opendoors, ,cuffs [player]"
 
 	local Arg2_P = SPLITED[2]
 	local Arg3_P = SPLITED[3]
