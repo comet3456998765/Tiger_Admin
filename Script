@@ -1,6 +1,6 @@
 --[[
   _______ _____ _____ ______ _____             _____  __  __ _____ _   _ 
- |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE Modified by Net Hub
+ |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE
     | |    | || |  __| |__  | |__) |    /  \  | |  | | \  / | | | |  \| |
     | |    | || | |_ |  __| |  _  /    / /\ \ | |  | | |\/| | | | | . ` |
     | |   _| || |__| | |____| | \ \   / ____ \| |__| | |  | |_| |_| |\  |
@@ -34,20 +34,16 @@ do--//Instances
 	RunService = game:GetService("RunService")
 	gethui=gethui or nil
 	SearchBar = Instance.new("TextBox")
-	Folder.Name = "Tiger1.1Loaded"
+	Folder.Name = "Tiger_PL"
 	--
 	HasFireTouch = false
 	unloaded=false
+	SavedAdmins = {}
 	firetouchinterest=firetouchinterest
 	firetouch = firetouchinterest
 	oldprint = print
 	IsBringing = false
 	loopkilling = {}
-	print = function(...)
-		if Debug then
-			oldprint(...)
-		end
-	end
 end
 do
 	--//Top functions & tables
@@ -61,7 +57,7 @@ do
 	States = {
 		autore = false,
 		KillAura = false,
-		SilentAim= true,
+		SilentAim = true,
 		AntiPunch = false,
 		AntiTase = false,
 		FastPunch = false,
@@ -79,8 +75,108 @@ do
 	Reload_Guns = {}
 	Whitelisted = {}
 	Parts = {}
-	Temp = {Esps={}}
+	Temp = {}
 	Whitelisted_ITEMS = {}
+end
+if game:FindFirstChild("Tiger_PL") then
+	ScreenGui:Destroy()
+	unloaded = true
+	return
+end
+do
+	function Tween(Obj,Prop,New,Time)
+		if not Time then Time = .5 end
+		task.spawn(function()
+			local TweenService = game:GetService("TweenService")
+			local info = TweenInfo.new(
+				Time, 
+				Enum.EasingStyle.Quart, 
+				Enum.EasingDirection.Out, 
+				0, 
+				false,
+				0
+			)
+			local propertyTable = {
+				[Prop] = New,
+			}
+
+			TweenService:Create(Obj, info, propertyTable):Play()
+		end)
+	end
+	--Loading.
+	Temp.Respawned_132 = false
+	local LoadingGUI = Instance.new("ScreenGui")
+	local Loading = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local UIStroke = Instance.new("UIStroke")
+	local Darken = Instance.new("Frame")
+	local Outter = Instance.new("Frame")
+	local UICorner_2 = Instance.new("UICorner")
+	local Tweener = Instance.new("Frame")
+	local UICorner_3 = Instance.new("UICorner")
+	local Text = Instance.new("TextLabel")
+	local UIGradient = Instance.new("UIGradient")
+	LoadingGUI.Name = "LoadingGUI"
+	LoadingGUI.Parent = (game:GetService("CoreGui") or gethui())
+	LoadingGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	Loading.Name = "Loading"
+	Loading.Parent = LoadingGUI
+	Loading.AnchorPoint = Vector2.new(0.5, 0.5)
+	Loading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Loading.BackgroundTransparency=1
+	Loading.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Loading.Size = UDim2.new(0, 404, 0, 172)
+	UICorner.CornerRadius = UDim.new(0, 3)
+	UICorner.Parent = Loading
+	Darken.Name = "Darken"
+	Darken.Parent = Loading
+	Darken.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Darken.BackgroundTransparency = 1
+	Darken.BorderSizePixel = 0
+	Darken.Size = UDim2.new(0, 404, 0, 172)
+	Outter.Name = "Outter"
+	Outter.Parent = Darken
+	Outter.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	Outter.Position = UDim2.new(0.297029704, 0, 0.645348847, 0)
+	Outter.Size = UDim2.new(0, 164, 0, 5)
+	UICorner_2.Parent = Outter
+	Tweener.Name = "Tweener"
+	Tweener.Parent = Outter
+	Tweener.BackgroundColor3 = Color3.fromRGB(3, 196, 255)
+	Tweener.Position = UDim2.new(-0.00175066688, 0, 0, 0)
+	Tweener.Size = UDim2.new(0, 0, 0, 5)
+	UICorner_3.Parent = Tweener
+	Text.Name = "Text"
+	Text.Parent = Loading
+	Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Text.BackgroundTransparency = 1.000
+	Text.Position = UDim2.new(0.252475262, 0, 0.401162773, 0)
+	Text.Size = UDim2.new(0, 200, 0, 33)
+	Text.Font = Enum.Font.Gotham
+	Text.Text = "Loading"
+	Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Text.TextSize = 18.000
+	task.spawn(function()
+		Text.Text = "Loading {Guis}"
+		game:GetService("ContentProvider"):PreloadAsync({
+			Commands,
+			Out,
+			Commands,
+		})
+		Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
+		wait(.1)
+		Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
+		Text.Text = "Loading {Scripts/Character}"
+		repeat task.wait() until Temp.Respawned_132 == true
+		Tweener.Size = UDim2.new(1,0,1,0)
+		wait(.7)
+		repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
+		Text.Text = "Finished loading!"
+		wait(.4)
+		Loading:TweenPosition(Loading.Position-UDim2.new(0,0,1,0),"Out","Quart",.6)
+		wait(1.5)
+		Loading:Destroy()
+	end)
 end
 function MoveToJunk(v)
 	v.CFrame = CFrame.new(0,5^5,0)
@@ -89,6 +185,9 @@ for i,v in pairs(workspace["Criminals Spawn"]:GetChildren()) do
 	if v and v:IsA("Part") then
 		MoveToJunk(v)
 	end
+end
+function UneqTools()
+	plr.Character:FindFirstChildOfClass("Humanoid"):UnequipTools()
 end
 workspace.FallenPartsDestroyHeight = -math.huge
 task.spawn(function()
@@ -116,14 +215,25 @@ function Msg(player,Text)
 	local ohString2 = "All"
 	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(ohString1, ohString2)
 end
-local http = game:GetService("HttpService")
-if writefile and isfile then
-	if isfile("Tiger.Admin") == false then
-		Settings = {
-			Discord_Invite_On_Execution = true
-		}
-		thingy = http:JSONEncode(Settings)
-		writefile("Tiger.Admin",thingy)
+if writefile and makefolder and readfile and isfile then
+	if isfile("Tiger Admin") == false or isfile("Tiger_Admin/Invite.json") == false then
+		makefolder("Tiger_Admin")
+		if isfile("Tiger_Admin/Invite.json") == false then
+			writefile("Tiger_Admin/Invite.json",game:GetService("HttpService"):JSONEncode({
+				Invite_To_Server = true
+			}))
+		end
+		if isfile("Tiger_Admin/SavedAdmins.json") == false then
+			writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode({}))
+		else
+			local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
+			for i,v in pairs(Content) do
+				if v then
+					print(v)
+					States.Admined[#States.Admined+1] = v
+				end
+			end
+		end
 	end
 end
 do --//Main Gui
@@ -387,7 +497,7 @@ do --//Main Gui
 	SearchBar.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
 	SearchBar.PlaceholderText = "Search here"
 	SearchBar.Text = ""
-	SearchBar.TextColor3 = Color3.fromRGB(0, 0, 0)
+	SearchBar.TextColor3 = Color3.fromRGB(234, 234, 234)
 	SearchBar.TextSize = 14.000
 	local function dragify(Frame) --//shit annoying
 		local dragToggle = nil
@@ -429,55 +539,34 @@ do --//Main Gui
 	function Notif(Text,Dur)
 		task.spawn(function()
 			if not Dur then Dur = 1.57 end
-			local NotifGuiScreen = Instance.new("ScreenGui")
-			local Frame = Instance.new("Frame")
-			local UIGradient = Instance.new("UIGradient")
+			local Notif = Instance.new("ScreenGui")
+			local Frame_1 = Instance.new("Frame")
 			local TextLabel = Instance.new("TextLabel")
-			local UICorner = Instance.new("UICorner")
-			local UIStroke = Instance.new("UIStroke")
-
-			NotifGuiScreen.Parent = (game:GetService("CoreGui") or gethui())
-			NotifGuiScreen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-			Frame.Parent = NotifGuiScreen
-			Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			Frame.Position = UDim2.new(0.00906095561, 0, 0.921446383, 0)+UDim2.new(0,0,.4,0)
-			Frame.Size = UDim2.new(0, 326, 0, 49)
-
-			UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(127, 20, 148)), ColorSequenceKeypoint.new(0.29, Color3.fromRGB(82, 40, 174)), ColorSequenceKeypoint.new(0.64, Color3.fromRGB(184, 63, 11)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 30, 0))}
-			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.30), NumberSequenceKeypoint.new(1.00, 0.30)}
-			UIGradient.Parent = Frame
-
-			TextLabel.Parent = Frame
+			Notif.Parent = (game:GetService("CoreGui") or gethui())
+			Notif.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+			Frame_1.Parent = Notif
+			Frame_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			Frame_1.BackgroundTransparency=1
+			Frame_1.BorderSizePixel = 0
+			Frame_1.Position = UDim2.new(0, 0, 0.0500000007, 0)
+			Frame_1.Size = UDim2.new(1, 0, 0.100000001, 0)
+			TextLabel.Parent = Frame_1
 			TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			TextLabel.BackgroundTransparency = 1.000
-			TextLabel.Position = UDim2.new(0, 0, -0.020833334, 0)
-			TextLabel.Size = UDim2.new(0, 326, 0, 49)
-			TextLabel.Font = Enum.Font.SourceSans
-			TextLabel.TextTransparency = .1
-			TextLabel.Text = tostring(Text) or "Missing text"
+			TextLabel.TextTransparency =1
+			TextLabel.Size = UDim2.new(1, 0, 1, 0)
+			TextLabel.Font = Enum.Font.Highway
+			TextLabel.Text = Text or "Text not found"
 			TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 			TextLabel.TextSize = 21.000
-			TextLabel.TextStrokeTransparency = 0.740
-			TextLabel.TextWrapped = true
-
-			UICorner.CornerRadius = UDim.new(0, 3)
-			UICorner.Parent = Frame
-
-			UIStroke.Parent = Frame
-			wait(.1)
-			Frame:TweenPosition(UDim2.new(0.00906095561, 0, 0.921446383, 0),"Out","Quart",.6)
+			Tween(Frame_1,"BackgroundTransparency",0.350,.5)
+			Tween(TextLabel,"TextTransparency",0,.5)
 			wait(Dur+.7)
-			Frame:TweenPosition(UDim2.new(0.00906095561, 0, 0.921446383, 0)+UDim2.new(0,0,.2,0),"Out","Quart",1)
-			wait(1)
-			NotifGuiScreen:Destroy()
+			Tween(Frame_1,"BackgroundTransparency",1,.5)
+			Tween(TextLabel,"TextTransparency",1,.5)
+			wait(.7)
+			Notif:Destroy()
 		end)
-		return
-	end
-	if game:FindFirstChild("Tiger1.1Loaded") then
-		ScreenGui:Destroy()
-		unloaded = true
-		Notif("Tiger admin is already loaded!")
 		return
 	end
 	Folder.Parent = game
@@ -494,7 +583,7 @@ do --//Main Gui
 		TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
 		TextLabel.Size = UDim2.new(0, 200, 0, 32)
 		TextLabel.Font = Enum.Font.Cartoon
-		TextLabel.Text = "Net Hub Admin / Tiger Admin"
+		TextLabel.Text = "Net Hub Adm V9"
 		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TextLabel.TextScaled = true
 		TextLabel.TextSize = 14.000
@@ -527,7 +616,7 @@ do --//Main Gui
 	end
 end
 do--//Command handler
-	Prefix = "!"
+	Prefix = ","
 	CommandsGot = 0
 	TableCommands={}
 	CommandsRawList = {}
@@ -589,6 +678,15 @@ FindPlayer = function(h,h2)
 	end
 	return nil
 end
+FindString = function(String,Table)
+	String = String:gsub("%s+", "")
+	for m, n in pairs(Table) do
+		if n:lower():match("^" .. String:lower()) then
+			return n
+		end
+	end
+	return nil
+end
 Add_Command = function(Name,Callback,Does,PlayerCommand,R)
 	task.spawn(function()
 		if Name and Callback then
@@ -615,6 +713,9 @@ Add_Command = function(Name,Callback,Does,PlayerCommand,R)
 			CloneTXT.Visible = true
 			if Does and Does == true or Does == "true" or PlayerCommand == true then
 				CloneTXT.Visible = false
+				CloneTXT.Changed:Connect(function()
+					CloneTXT.Visible = false
+				end)
 			end
 			CommandsGot+=1
 			CommandsRawList[#CommandsRawList+1]=CloneTXT
@@ -627,18 +728,11 @@ Add_Command = function(Name,Callback,Does,PlayerCommand,R)
 	end)
 end
 do
-	--[[
-	if UIS.TouchEnabled and not UIS.MouseEnabled then
-		Out.Size = UDim2.new(0.647, 0,0.684, 0)
-		Out.Position = UDim2.new(0.176, 0,0.146, 0)
-		CmdsIcon.Size = UDim2.new(0.092, 0,0.684, 0)
-		Temp.Phone = true
-	end
-	]]
-end
-do
 	--//Temp set up
 	Temp.CmdsC = false
+	Temp.Waiting2 = nil
+	Temp.Waiting = false
+	Temp.Esps={}
 end
 
 do
@@ -648,11 +742,14 @@ do
 	end
 	function WaitForRespawn()
 		task.spawn(function()
+			Temp.Waiting = true
 			local RepeatPos = getpos()
-			Temp.Waiting2 = plr.CharacterAdded:Connect(function(char)
-				Temp.Waiting = false
-				repeat task.wait() until char and char:FindFirstChild("HumanoidRootPart")
-				MoveTo(RepeatPos)
+			task.spawn(function()
+				Temp.Waiting2 = plr.CharacterAdded:Connect(function(char)
+					repeat task.wait() until char and char:FindFirstChild("HumanoidRootPart")
+					Temp.Waiting = false
+					MoveTo(RepeatPos)
+				end)
 			end)
 			repeat task.wait()
 				RepeatPos = getpos()
@@ -793,65 +890,36 @@ do
 		end
 		return true
 	end
+	function GetGun(Item,Ignore)
+		local saved = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
+		if workspace.Prison_ITEMS.giver:FindFirstChild(Item) and workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChild("ITEMPICKUP") then
+			Item =workspace.Prison_ITEMS.giver:FindFirstChild(Item)
+			local ohInstance1 = Item:FindFirstChildOfClass("Part")
+			MoveTo(CFrame.new(ohInstance1.Position))
+			repeat wait()
+				local ohInstance1 = Item:FindFirstChildOfClass("Part")
+				MoveTo(CFrame.new(ohInstance1.Position))
+				task.spawn(function()
+					workspace.Remote.ItemHandler:InvokeServer(ohInstance1)
+				end)
+				wait()
+			until plr.Backpack:FindFirstChild(Item.Name) or plr.Character:FindFirstChild(Item.Name)
+		end
+		if Ignore ~= true then
+			plr.Character:SetPrimaryPartCFrame(Ignore or saved)
+		end
+	end
 	function All_Guns()
 		local saved = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
 		if game:GetService("MarketplaceService"):UserOwnsGamePassAsync(plr.UserId, 96651) then
-			game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP.Position))
-			local ohInstance1 = game:GetService("Workspace").Prison_ITEMS.giver.M4A1:GetChildren()[6]
-			workspace.Remote.ItemHandler:InvokeServer(ohInstance1)
-			task.spawn(function()
-				for i =1,3 do
-					workspace.Remote.ItemHandler:InvokeServer(ohInstance1)
-				end		
-			end)
-			wait(.1)
+			GetGun("M4A1",true)
 		end
-		game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP.Position))
-		for i =1,2 do
-			local ohInstance1 = game:GetService("Workspace").Prison_ITEMS.giver.M9:GetChildren()[6]
-			workspace.Remote.ItemHandler:InvokeServer(ohInstance1)
-			task.spawn(function()
-				for i =1,3 do
-					workspace.Remote.ItemHandler:InvokeServer(ohInstance1)
-				end		
-			end)
-			local ohInstance2 = workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP
-			workspace.Remote.ItemHandler:InvokeServer(ohInstance2)
-			task.spawn(function()
-				for i =1,3 do
-					workspace.Remote.ItemHandler:InvokeServer(ohInstance2)
-				end		
-			end)
-			local ohInstance3 = game:GetService("Workspace").Prison_ITEMS.giver["AK-47"]:GetChildren()[51]
-			wait()
-			game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(game:GetService("Workspace").Prison_ITEMS.giver["AK-47"]:GetChildren()[51].Position+Vector3.new(0,4,0)))
-			workspace.Remote.ItemHandler:InvokeServer(ohInstance3)
-			task.spawn(function()
-				for i =1,3 do
-					workspace.Remote.ItemHandler:InvokeServer(ohInstance3)
-				end		
-			end)
-		end
+		GetGun("AK-47",true)
+		task.spawn(function()
+			GetGun("Remington 870",true)
+		end)
+		GetGun("M9",true)
 		game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(saved)
-	end
-	function GetGun(String,a)
-		local saved = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
-		if String and game:GetService("Workspace").Prison_ITEMS.giver:FindFirstChild(String) then
-			local RandomPart = game:GetService("Workspace").Prison_ITEMS.giver:FindFirstChild(String):FindFirstChildOfClass("Part")
-			MoveTo(CFrame.new(RandomPart.Position))
-			wait()
-			for i =1,3 do
-				task.spawn(function()
-					workspace.Remote.ItemHandler:InvokeServer(RandomPart)
-				end)
-			end
-		else
-			return
-		end
-		if not plr.Backpack:FindFirstChild(String) then
-			GetGun(String,saved)
-		end
-		game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(a or saved)
 	end
 	function GetTeam()
 		return plr.TeamColor.Name
@@ -939,6 +1007,9 @@ do
 		Parts[1] = Part
 	end
 	function MKILL(target,STOP,P)
+		if target == plr or target == plr.Name then
+			return
+		end
 		if typeof(target):lower() == "string" and game:GetService("Players"):FindFirstChild(target) then
 			target = game:GetService("Players"):FindFirstChild(target)
 		end
@@ -1079,6 +1150,37 @@ do
 		MoveTo(a)
 
 	end
+	function Crash()
+		local Bullets = {}
+		local Player = plr
+		for i = 1,10 do
+			Bullets[#Bullets+1] = {
+				["RayObject"] = Ray.new(Vector3.new(990.272583, 101.489975, 2362.74878), Vector3.new(-799.978333, 0.23157759, -5.88794518)),
+				["Distance"] = 198.9905242919922,
+				["Cframe"] = CFrame.new(894.362549, 101.288307, 2362.53491, -0.0123058055, 0.00259522465, -0.999920964, 3.63797837e-12, 0.999996722, 0.00259542116, 0.999924302, 3.19387436e-05, -0.0123057645),
+			}
+		end
+		if #game:GetService("Teams").Guards:GetPlayers() >7 then
+			GetGun("M9")
+		else
+			ChangeTeam(game.Teams.Guards)
+		end
+		repeat task.wait() until Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
+		game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9"))
+		while task.wait() do
+			local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
+			if not Gun or not GetHumanoid() or GetHumanoid() and GetHumanoid().Health <1  then
+				task.wait(4)--//Ping cool down
+				break
+			end
+			coroutine.wrap(function()
+				game:GetService("ReplicatedStorage").ShootEvent:FireServer(Bullets,Gun)
+			end)()
+			coroutine.wrap(function()
+				game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Gun)
+			end)()
+		end
+	end
 	function ReturnGun()
 		for i,v in pairs(plr.Backpack:GetChildren()) do
 			if v and v:IsA("Tool") and v:FindFirstChildOfClass("ModuleScript") then
@@ -1095,7 +1197,7 @@ do
 				return
 			end
 		end
-		if player == plr then
+		if player == plr or player == plr.Name then
 			return Notif("Can't kill yourself????")
 		end
 		local Gun = ReturnGun()
@@ -1200,6 +1302,7 @@ do
 		end)
 	end
 	function MoveTo(Pos,t)
+		unsit()
 		pcall(function()
 			if typeof(Pos):lower() == "position" then
 				Pos = CFrame.new(Pos)
@@ -1264,9 +1367,33 @@ do
 		print("Refreshed")
 		return
 	end
-	--//Shits 100 lines :skull:
+	--//
+	function FixHats(Hats)
+		local function FindHat(a)
+			for i,v in pairs(Hats) do
+				if v and v == a then
+					return v
+				end
+			end
+			return nil
+		end
+		--Fix hats 2
+		for i,v in pairs(Hats) do
+			if v then
+				pcall(function()
+					local Hat = v.Hat
+					local NewWeld = Instance.new("Weld",Hat.Handle)
+					NewWeld.Part0 = Hat.Handle
+					NewWeld.Part1 = plr.Character.Head
+					NewWeld.C0 = v.OldPosition
+					NewWeld.C1 = v.OldPosition2
+					Hat.Handle.Anchored = false
+				end)
+			end
+		end
+	end
 	function bring(player,pos,Type,Extra)
-		if player then
+		if player and player ~= plr and player ~= plr.Name then
 			local lastteam = plr.TeamColor.Name
 			if plr.Team ~= game.Teams.Guards then
 				local ohString1 = "Bright blue"
@@ -1290,7 +1417,14 @@ do
 			end
 			local Goto = pos
 			repeat task.wait() Handcuffs = plr.Backpack:FindFirstChild("Handcuffs")  until Handcuffs and Handcuffs:FindFirstChild("Handle")
-			Handcuffs.Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
+			if not Handcuffs or not Handcuffs:FindFirstChild("Handle") or not Handcuffs.Handle:FindFirstChildOfClass("SpecialMesh") then
+				return Notif("Failed to bring due to a rare error!")
+			end
+			
+			player.Character:FindFirstChildOfClass("Humanoid"):RemoveAccessories()
+			if Type ~= "a" then
+				Handcuffs.Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
+			end
 			wait(.1)
 			if pos then
 				MoveTo(pos)
@@ -1322,30 +1456,7 @@ do
 					Instance.new("Humanoid",plr.Character)
 				end)
 			end
-			do
-				local function FindHat(a)
-					for i,v in pairs(Hats) do
-						if v and v == a then
-							return v
-						end
-					end
-					return nil
-				end
-				--Fix hats 2
-				for i,v in pairs(Hats) do
-					if v then
-						pcall(function()
-							local Hat = v.Hat
-							local NewWeld = Instance.new("Weld",Hat.Handle)
-							NewWeld.Part0 = Hat.Handle
-							NewWeld.Part1 = plr.Character.Head
-							NewWeld.C0 = v.OldPosition
-							NewWeld.C1 = v.OldPosition2
-							Hat.Handle.Anchored = false
-						end)
-					end
-				end
-			end
+			FixHats(Hats)
 			repeat task.wait()
 				pcall(function()
 					plr.Character:FindFirstChildOfClass("Humanoid"):EquipTool(Handcuffs)
@@ -1451,6 +1562,17 @@ do
 			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
 		end
 	end,"Rejoins the server")
+	Add_Command("rj",function(Args)
+		local Args = GetArgs(Args)
+		Notif("Rejoining...")
+		wait(.3)
+		if #game:GetService("Players"):GetPlayers() ==1 then
+			game:GetService("Players").LocalPlayer:Kick("Please wait.")
+			game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+		else
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+		end
+	end,"Rejoins the server")
 	Add_Command("opendoors",function(Args)
 		local Args = GetArgs(Args)
 		local LastTeam =plr.TeamColor.Name
@@ -1501,6 +1623,11 @@ do
 		Instance.new("HopperBin",plr.Backpack).BinType = 3
 		Instance.new("HopperBin",plr.Backpack).BinType = 4
 	end,"client sided btools that you can only see")
+	Add_Command("bt",function(Args)
+		local Args = GetArgs(Args)
+		Instance.new("HopperBin",plr.Backpack).BinType = 3
+		Instance.new("HopperBin",plr.Backpack).BinType = 4
+	end,"client sided btools that you can only see")
 	Add_Command("key",function(Args)
 		local Args = GetArgs(Args)
 		keycard()
@@ -1530,6 +1657,10 @@ do
 		local Args = GetArgs(Args)
 		GetGun("M9")
 	end,"Gets m9")
+	Add_Command("m4a1",function(Args)
+		local Args = GetArgs(Args)
+		GetGun("M4A1")
+	end,"Gets M4A1")
 	Add_Command("tase",function(Args)
 		local Args = GetArgs(Args)
 		local r = FindPlayer(Args[2])
@@ -1558,11 +1689,15 @@ do
 		local Args = GetArgs(Args)
 		GetGun("Remington 870")
 	end,"Gets a shotgun")
-	Add_Command("rj",function(Args)
-		local Args = GetArgs(Args)
-		Execute_Command("!rejoin","!rejoin")
-	end,"true",true)
 	Add_Command("refresh",function(Args)
+		local Args = GetArgs(Args)
+		refresh()
+	end,"Respawns your character")
+	Add_Command("re",function(Args)
+		local Args = GetArgs(Args)
+		refresh()
+	end,"Respawns your character")
+	Add_Command("r",function(Args)
 		local Args = GetArgs(Args)
 		refresh()
 	end,"Respawns your character")
@@ -1597,101 +1732,11 @@ do
 		end)
 	end,"Brings a car to your location")
 	Add_Command("crashserver",function(Args)
-		Notif("Attemping to crash the server.",5)
-		local Args = GetArgs(Args)
-		local Args = {}
-		for i =1,100 do
-			Args[#Args+1] = { --//shot my gun and got remote so why not
-				["RayObject"] = Ray.new(Vector3.new(943.0889282226562, 101.4899673461914, 2457.429931640625), Vector3.new(749.2162475585938, 116.06295013427734, 255.35150146484375)), 
-				["Distance"] = 100, 
-				["Cframe"] = CFrame.new(947.794922, 101.702385, 2458.55518, 0.632757664, -0.356117994, 0.687602937, 1.49011612e-08, 0.887974501, 0.459892809, -0.774349988, -0.291000694, 0.561872602), 
-				["Hit"] = game:GetService("Workspace")["Prison_Cellblock"]["a_front"].Part
-			}
-		end
-		local Return = false
-		local Gun = nil
-		task.spawn(function()
-			Gun = plr.Backpack.ChildAdded:Wait()
-		end)
-		GetGun("M9")
-		repeat task.wait() until Gun
-		task.spawn(function()
-			repeat task.wait() until not plr.Character:FindFirstChild("M9") and not plr.Backpack:FindFirstChild("M9")
-			Return = true
-			Execute_Command("!crashserver","!crashserver")
-			return
-		end)
-		for i =1,10000 do
-			task.spawn(function()
-				game:GetService("ReplicatedStorage").ShootEvent:FireServer(Args,Gun)
-			end)
-			game:GetService("RunService").RenderStepped:Wait()
-		end
-		while task.wait(4) do
-			if Return then
-				break
-			end
-			task.spawn(function()
-				if Gun then
-					for i =1,5 do
-						task.spawn(function()
-							game:GetService("ReplicatedStorage").ShootEvent:FireServer(Args, Gun)
-						end)
-					end
-				end
-			end)
-		end
+		Crash()
 	end,"Attempts to shutdown the server")
 	Add_Command("disconnect",function(Args)
-		Notif("Attemping to crash the server.",5)
-		local Args = GetArgs(Args)
-		local Args = {}
-		for i =1,100 do
-			Args[#Args+1] = { --//shot my gun and got remote so why not
-				["RayObject"] = Ray.new(Vector3.new(943.0889282226562, 101.4899673461914, 2457.429931640625), Vector3.new(749.2162475585938, 116.06295013427734, 255.35150146484375)), 
-				["Distance"] = 100, 
-				["Cframe"] = CFrame.new(947.794922, 101.702385, 2458.55518, 0.632757664, -0.356117994, 0.687602937, 1.49011612e-08, 0.887974501, 0.459892809, -0.774349988, -0.291000694, 0.561872602), 
-				["Hit"] = game:GetService("Workspace")["Prison_Cellblock"]["a_front"].Part
-			}
-		end
-		local Return = false
-		local Gun = nil
-		task.spawn(function()
-			Gun = plr.Backpack.ChildAdded:Wait()
-		end)
-		GetGun("M9")
-		repeat task.wait() until Gun
-		task.spawn(function()
-			repeat task.wait() until not plr.Character:FindFirstChild("M9") and not plr.Backpack:FindFirstChild("M9")
-			Return = true
-			Execute_Command("!crashserver","!crashserver")
-			return
-		end)
-		for i =1,10000 do
-			task.spawn(function()
-				game:GetService("ReplicatedStorage").ShootEvent:FireServer(Args,Gun)
-			end)
-			game:GetService("RunService").RenderStepped:Wait()
-		end
-		while task.wait(4) do
-			if Return then
-				break
-			end
-			task.spawn(function()
-				if Gun then
-					for i =1,5 do
-						task.spawn(function()
-							game:GetService("ReplicatedStorage").ShootEvent:FireServer(Args, Gun)
-						end)
-					end
-				end
-			end)
-		end
+		Crash()
 	end,"Attempts to shutdown the server")
-	Add_Command("re",function(Args)
-		local Args = GetArgs(Args)
-		Execute_Command("!refresh","!refresh")
-	end,"true",true,true,true)
 	Add_Command("godmode",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"Godmode")
@@ -1767,10 +1812,37 @@ do
 			wait()
 			workspace.CurrentCamera.CameraSubject = plr.Character:FindFirstChildOfClass("Humanoid")
 		end
-		Notif("Tiger admin is now unloaded, see you soon!")
+		Notif("Net Hub Adn is now unloaded, see you soon!")
 	end,"Unloads everything")
 
 	Add_Command("kill",function(Args)
+		local Args = GetArgs(Args)
+		local Check1 = function(ar)
+			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
+				if v and v.Name:lower() == ar:lower() then
+					return v
+				end
+			end
+			return nil
+		end
+		if Args[2] then
+			if Args[2] == "all" then
+				Kill_All()
+			elseif Check1(Args[2])  then
+				Kill_All(Check1(Args[2]))
+			else
+				local r = FindPlayer(Args[2])
+				if r then
+					kill(r)
+				else
+					NotFound()
+				end
+			end
+		else
+			Notif("Missing arg2 !kill player")
+		end
+	end,"kills a player","PLAYER_COMMAND")
+	Add_Command("k",function(Args)
 		local Args = GetArgs(Args)
 		local Check1 = function(ar)
 			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
@@ -1807,16 +1879,6 @@ do
 		end
 		return game:GetService("TeleportService"):TeleportToPlaceInstance(game['PlaceId'], Ids[math.random(1, #Ids)])
 	end,"Joins another server")
-	Add_Command("getusers",function(Args)
-		local Args = GetArgs(Args)
-		local Concat = {}
-		for i,v in pairs(game:GetService("Players"):GetChildren()) do
-			if v and v.Character and v.Character:FindFirstChild("Animate") and not v.Character.Animate:FindFirstChild("ScaleDampeningPercent") then
-				Concat[#Concat+1]=v.Name..", "
-			end
-		end
-		Notif("users: "..tostring(table.concat(Concat)),5)
-	end,"Shows all tiger admin users")
 	Add_Command("loopkill",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
@@ -1838,7 +1900,7 @@ do
 			NotFound()
 		end
 	end,"loop kills a player","PLAYER_COMMAND")
-		Add_Command("lk",function(Args)
+	Add_Command("lk",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1929,13 +1991,126 @@ do
 			NotFound()
 		end
 	end,"unwhitelists a player","PLAYER_COMMAND")
-	Add_Command("admin","rank",function(Args)
+	Add_Command("admins",function(Args)
+		local Args = GetArgs(Args)
+		local Found = ""
+		for i,v in pairs(States.Admined) do
+			Found = Found..v.." "
+		end
+		Notif(Found,3)
+	end,"Shows you all the players you admined")
+	Add_Command("rankeds",function(Args)
+		local Args = GetArgs(Args)
+		local Found = ""
+		for i,v in pairs(States.Admined) do
+			Found = Found..v.." "
+		end
+		Notif(Found,3)
+	end,"Shows you all the players you admined")
+	Add_Command("autoadmin",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say !cmds to get started!")
+			Msg(r,"You have been admined say ,cmds to get started!")
+			SavedAdmins[#SavedAdmins+1] = r.Name
+			if writefile and readfile then
+				local New = {}
+				local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
+				for i,v in pairs(Content) do
+					if v then
+						table.insert(New,v)
+					end
+				end
+				table.insert(New,r.Name)
+				writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
+			end
+		else
+			NotFound()
+		end
+	end,"when you execute script it saves all admins","PLAYER_COMMAND")
+	Add_Command("autorank",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			States.Admined[#States.Admined+1]=r.Name
+			Notif("Admined "..r.Name)
+			Msg(r,"You have been admined say ,cmds to get started!")
+			SavedAdmins[#SavedAdmins+1] = r.Name
+			if writefile and readfile then
+				local New = {}
+				local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
+				for i,v in pairs(Content) do
+					if v then
+						table.insert(New,v)
+					end
+				end
+				table.insert(New,r.Name)
+				writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
+			end
+		else
+			NotFound()
+		end
+	end,"when you execute script it saves all admins","PLAYER_COMMAND")
+	Add_Command("unautoadmin",function(Args)
+		local Args = GetArgs(Args)
+		if writefile and readfile then
+			local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
+			local Found = FindString(Args[2],Content)
+			local New = {}
+			if Found then
+				for i,v in pairs(Content) do
+					warn(v)
+					if v and v ~= Found then
+						table.insert(New,v)
+					else
+						warn("removed")
+					end
+				end
+				Notif("Removed admin from player")
+			end
+			writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
+		end
+	end,"removes autoadmin from a player","PLAYER_COMMAND")
+	Add_Command("unautorank",function(Args)
+		local Args = GetArgs(Args)
+		if writefile and readfile then
+			local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
+			local Found = FindString(Args[2],Content)
+			local New = {}
+			if Found then
+				for i,v in pairs(Content) do
+					warn(v)
+					if v and v ~= Found then
+						table.insert(New,v)
+					else
+						warn("removed")
+					end
+				end
+				Notif("Removed admin from player")
+			end
+			writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
+		end
+	end,"removes autoadmin from a player","PLAYER_COMMAND")
+	Add_Command("admin",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			States.Admined[#States.Admined+1]=r.Name
+			Notif("Admined "..r.Name)
+			Msg(r,"You have been admined say ,cmds to get started!")
+		else
+			NotFound()
+		end
+	end,"Admins a player","PLAYER_COMMAND")
+	Add_Command("rank",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			States.Admined[#States.Admined+1]=r.Name
+			Notif("Admined "..r.Name)
+			Msg(r,"You have been admined say ,cmds to get started!")
 		else
 			NotFound()
 		end
@@ -1959,7 +2134,8 @@ do
 				cc["Bullets"] = 100
 				cc["AutoFire"] = true
 			end
-			Reload_Guns[#Reload_Guns]=Tool
+			Reload_Guns[#Reload_Guns+1]=Tool
+			UneqTools()
 		else
 			Notif("You need to hold the tool you want to mod!")
 		end
@@ -1983,11 +2159,19 @@ do
 				cc["Bullets"] = 1
 				cc["AutoFire"] = true
 			end
-			Reload_Guns[#Reload_Guns]=Tool
+			Reload_Guns[#Reload_Guns+1]=Tool
+			UneqTools()
 		else
 			Notif("You need to hold the tool you want to mod!")
 		end
 	end,"Mods your gun")
+	Add_Command("cuffs",function(Args)
+		local Args = GetArgs(Args)
+		local Player = FindPlayer(Args[2])
+		if Player then
+			bring(Player,Player.Character:GetPrimaryPartCFrame(),"a",true)
+		end
+	end,"Gives handcuffs to a player","PLAYER_COMMAND")
 	Add_Command("autofire",function(Args)
 		local Args = GetArgs(Args)
 		if plr.Character:FindFirstChildOfClass("Tool") then
@@ -1997,7 +2181,8 @@ do
 			end
 			local cc = require(Tool.GunStates)
 			cc["AutoFire"] = true
-			Reload_Guns[#Reload_Guns]=Tool
+			Reload_Guns[#Reload_Guns+1]=Tool
+			UneqTools()
 		else
 			Notif("You need to hold the tool you want to mod!")
 		end
@@ -2011,7 +2196,8 @@ do
 			end
 			local cc = require(Tool.GunStates)
 			cc["FireRate"] = -math.huge
-			Reload_Guns[#Reload_Guns]=Tool
+			Reload_Guns[#Reload_Guns+1]=Tool
+			UneqTools()
 		else
 			Notif("You need to hold the tool you want to mod!")
 		end
@@ -2023,17 +2209,18 @@ do
 			if not Tool:FindFirstChild("GunStates") then
 				return Notif("Needs to be a gun!")
 			end
+			Reload_Guns[#Reload_Guns+1]=Tool
 			local cc = require(Tool.GunStates)
 			cc["MaxAmmo"] = math.huge
 			cc["StoredAmmo"] = math.huge
 			cc["AmmoPerClip"] = math.huge
 			cc["CurrentAmmo"] = math.huge
-			Reload_Guns[#Reload_Guns]=Tool
+			UneqTools()
 		else
 			Notif("You need to hold the tool you want to mod!")
 		end
 	end,"makes your gun have inf ammo")
-	Add_Command("unadmin","unrank",function(Args)
+	Add_Command("unadmin",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if States.Admined and r then
@@ -2043,7 +2230,37 @@ do
 			NotFound()
 		end
 	end,"Admins a player","PLAYER_COMMAND")
-	Add_Command("bring","get",function(Args)
+	Add_Command("unrank",function(Args)
+		local Args = GetArgs(Args)
+		local r = Args[2]
+		if States.Admined and r then
+			table.remove(States.Admined,table.find(States.Admined,r.Name))
+			Notif("Unadmined "..r.Name)
+		else
+			NotFound()
+		end
+	end,"Admins a player","PLAYER_COMMAND")
+	Add_Command("bring",function(Args)
+		local Args = GetArgs(Args)
+		if Args[2] == "all" then
+			local pos = getpos()
+			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+				if v and v~= plr then
+					bring(v,pos)
+				end
+			end
+			wait()
+			MoveTo(pos)
+		else
+			local r = FindPlayer(Args[2])
+			if r then
+				bring(r)
+			else
+				NotFound()
+			end
+		end
+	end,"Brings a player to you","PLAYER_COMMAND")
+	Add_Command("get",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
 			local pos = getpos()
@@ -2090,14 +2307,37 @@ do
 			plr.Character:FindFirstChildOfClass("Humanoid").JumpPower = r
 		end
 	end,"jumppower what else do you think","NUMBER_COMMAND")
-	Add_Command("speed","sd",function(Args)
+	Add_Command("jp",function(Args)
+		local Args = GetArgs(Args)
+		local r = Args[2]
+		if r and tonumber(r) then
+			plr.Character:FindFirstChildOfClass("Humanoid").JumpPower = r
+		end
+	end,"jumppower what else do you think","NUMBER_COMMAND")
+	Add_Command("speed",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if r and tonumber(r) then
 			plr.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = r
 		end
 	end,"Speed what else do you think","NUMBER_COMMAND")
-	Add_Command("goto","to","go",function(Args)
+	Add_Command("sd",function(Args)
+		local Args = GetArgs(Args)
+		local r = Args[2]
+		if r and tonumber(r) then
+			plr.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = r
+		end
+	end,"Speed what else do you think","NUMBER_COMMAND")
+	Add_Command("goto",function(Args)
+		local Args = GetArgs(Args)
+		local r = FindPlayer(Args[2])
+		if r then
+			MoveTo(r.Character["Head"].CFrame)
+		else
+			NotFound()
+		end
+	end,"teleports to a player")
+	Add_Command("to",function(Args)
 		local Args = GetArgs(Args)
 		local r = FindPlayer(Args[2])
 		if r then
@@ -2322,15 +2562,10 @@ do
 		ChangeTeam(game.Teams.Inmates)
 	end,"puts you into guards team")
 	Add_Command("noinvite",function(Args)
-		local Settings = {
-			Discord_Invite_On_Execution = false
-		}
-		local http = game:GetService("HttpService")
-		local thingy = http:JSONEncode(Settings)
-		if writefile then
-			writefile("Tiger.Admin",thingy)
+		if writefile and readfile then
+			writefile("Tiger_Admin/Invite.json",game:GetService("HttpService"):JSONEncode({Invite_To_Server=false}))
 		end
-		Notif("Invite disabled")
+		Notif("Invite has been disabled")
 	end,"Disables invite command")
 	Add_Command("criminal",function(Args)
 		local Args = GetArgs(Args)
@@ -2675,8 +2910,8 @@ do
 	--end of teleports
 	Add_Command("allcmds",function(Args) 
 		local Args = GetArgs(Args);local Pos  = CFrame.new(916, 79, 2311)
-		Notif("Tiger admin has "..tostring(CommandsGot).." commands in total!")
-	end,"Tells you how much commands tiger admin has")
+		Notif("Net Hub admin has "..tostring(CommandsGot).." commands in total!")
+	end,"Tells you how much commands Net Hub admin has")
 end
 do
 	local Check_Prefix = function(TXT)
@@ -2706,6 +2941,12 @@ do
 			end
 		end
 	end)
+	local layout = {}
+	for i,v in pairs(CommandsList:GetChildren()) do
+		if v and v:IsA("TextLabel") then
+			layout[#layout+1]=v
+		end
+	end
 	SearchBar.Changed:Connect(function(Changed)
 		if Changed:lower() == "text"  then
 			CommandsList.CanvasPosition = Vector2.new(0, 0)
@@ -2727,15 +2968,12 @@ do
 					end
 				end
 			elseif #SearchBar.Text <1 then
-				for i,v in pairs(CommandsList:GetChildren()) do
-					if v:IsA("TextLabel") then
-						if v.Name == "TEMP_CMD" then
-							v.Parent = ScreenGui
-							v.Visible = false
-						end
-					end
+				for i,v in pairs(layout) do
+					v.Parent = ScreenGui
+					v.Visible = false
 				end
-				for i,v in pairs(CommandsRawList) do
+				task.wait()
+				for i,v in pairs(layout) do
 					if v then
 						v.Parent = CommandsList
 						v.Visible = true
@@ -2782,6 +3020,7 @@ do
 end
 plr.CharacterAdded:Connect(function(char)
 	if unloaded then return end
+	Temp.Respawned_132 = true
 	task.spawn(function()
 		--//Antibring
 		if States.Antibring then
@@ -2807,9 +3046,6 @@ plr.CharacterAdded:Connect(function(char)
 		end
 		--//AutoItems
 		repeat task.wait() until char and char:FindFirstChildOfClass("Humanoid")
-		pcall(function()
-			plr.Character.Animate.ScaleDampeningPercent:Destroy()
-		end)
 		task.spawn(function()
 			if unloaded then return end
 			wait(.6)
@@ -2897,7 +3133,7 @@ task.spawn(function()
 		end
 		pcall(function()
 			for i,v in pairs(plr.Backpack:GetChildren()) do
-				if v and not v:FindFirstChildOfClass("BoolValue") then
+				if v and not v:FindFirstChild("ISWHITELISTED") then
 					Whitelisted_ITEMS[#Whitelisted_ITEMS+1]=v
 					Instance.new("BoolValue",v).Name = "ISWHITELISTED"
 				end
@@ -2926,17 +3162,11 @@ task.spawn(function()
 		if unloaded then
 			break
 		end
-		if #Reload_Guns>0 then
-			for i,v in pairs(Reload_Guns) do
-				if v then
-					task.spawn(function()
-						game:GetService("ReplicatedStorage").ReloadEvent:FireServer(v)
-					end)
-					wait()
-				end
-				if v == nil or v and v.Parent == nil then
-					Reload_Guns[i]=nil
-				end
+		for i,v in pairs(Reload_Guns) do
+			if v then
+				task.spawn(function()
+					game:GetService("ReplicatedStorage").ReloadEvent:FireServer(v)
+				end)
 			end
 		end
 		if States.AntiShield then
@@ -3193,33 +3423,22 @@ task.spawn(function()
 	end
 end)
 task.spawn(function()
-	if isfile and isfile("Tiger.Admin") then
-		local requesttype = nil
-		if identifyexecutor() == "Synapse X" then
-			requesttype = syn.request;
-		else
-			requesttype = http_request;
-		end
-		local http = game:GetService("HttpService")
-		local file = http:JSONDecode(readfile("Tiger.Admin"))
-		if file.Discord_Invite_On_Execution == true then
-			local http = game:GetService('HttpService') 
-			local req = requesttype
-			if req then
-				requesttype({
-					Url = 'http://127.0.0.1:6463/rpc?v=1',
-					Method = 'POST',
-					Headers = {
-						['Content-Type'] = 'application/json',
-						Origin = 'https://discord.com'
-					},
-					Body = http:JSONEncode({
-						cmd = 'INVITE_BROWSER',
-						nonce = http:GenerateGUID(false),
-						args = {code = 'zj5xRp3ZKn'}
-					})
+	if writefile and makefolder and readfile and isfile then
+		if game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/Invite.json")).Invite_To_Server then
+			local Request_ = (syn and syn.request) or http_request or request
+			Request_({
+				Url = 'http://127.0.0.1:6463/rpc?v=1',
+				Method = 'POST',
+				Headers = {
+					['Content-Type'] = 'application/json',
+					Origin = 'https://discord.com'
+				},
+				Body = game:GetService("HttpService"):JSONEncode({
+					cmd = 'INVITE_BROWSER',
+					nonce = game:GetService("HttpService"):GenerateGUID(false),
+					args = {code = 'zj5xRp3ZKn'}
 				})
-			end
+			})
 		end
 	end
 end)
@@ -3247,7 +3466,9 @@ function AdminChatted(Text,Speaker)
 	local TXT = string.lower(Text)
 	local SPLITED = TXT:split(" ")
 	Arg1_P = SPLITED[1]
-	local CmdsList = "[ADMIN]: !bring player, !cmds, !criminal player, !goto player, !kill [player,all], !fling [player], !car, !loopkill [player], !unloopkill [player], !tase [player,all]"
+	local CmdsList = "[ADMIN]: ,bring player, ,cmds, ,criminal player, ,goto player, ,kill [player,all], ,fling [player], ,car, ,loopkill [player]"
+	local CmdsList2 = "[ADMIN]: ,unloopkill [player], ,tase [player,all], ,yard, ,crimbase, ,armory, ,prison, ,opendoors, ,cuffs [player] ©️By Net Hub (Main Developer)"
+
 	local Arg2_P = SPLITED[2]
 	local Arg3_P = SPLITED[3]
 	local Arg4_P = SPLITED[4]
@@ -3280,12 +3501,24 @@ function AdminChatted(Text,Speaker)
 					Done = true
 				end
 			until Done
+			unsit()
 		end)
 		wait(.1)
 		MoveTo(org)
 	end
+	if commandPLAYER("cuffs") then
+		local Args = Arg2_P
+		if Args then
+			local Player = FindPlayer(Args)
+			if Player then
+				bring(Player,Player.Character:GetPrimaryPartCFrame(),"a",true)
+			end
+		else
+			bring(Speaker,Speaker.Character:GetPrimaryPartCFrame(),"a",true)
+		end
+	end
 	if commandPLAYER("kill") then
-		local r = FindPlayer(Arg2_P)
+		local Args = Arg2_P
 		local Check1 = function(ar)
 			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
 				if v and v.Name:lower() == ar:lower() then
@@ -3294,15 +3527,21 @@ function AdminChatted(Text,Speaker)
 			end
 			return nil
 		end
-		if Arg2_P and Check1(Arg2_P) then
-			Kill_All(Check1(Arg2_P))
-			return
-		end
-		if r then
-			MKILL(r)
+		if Args then
+			if Args == "all" then
+				Kill_All()
+			elseif Check1(Args)  then
+				Kill_All(Check1(Args))
+			else
+				local r = FindPlayer(Args)
+				if r then
+					kill(r)
+				else
+					NotFound()
+				end
+			end
 		else
-			Msg(Speaker,"Player not found!")
-			NotFound()
+			Notif("Missing arg2 !kill player")
 		end
 	end
 	if commandPLAYER("fling") then
@@ -3352,6 +3591,27 @@ function AdminChatted(Text,Speaker)
 			tase(r)
 		end
 	end
+
+	if commandPLAYER("crimbase") then
+		local Pos = CFrame.new(-858.08990478516, 94.476051330566, 2093.8288574219)
+		bring(Speaker,Pos)
+	end
+	if commandPLAYER("tower") then
+		local Pos = CFrame.new(822, 131, 2588)
+		bring(Speaker,Pos)
+	end
+	if commandPLAYER("armory") then
+		local Pos  = CFrame.new(789, 100, 2260)
+		bring(Speaker,Pos)
+	end
+	if commandPLAYER("prison") then
+		local Pos = CFrame.new(918.77, 100, 2379.07)
+		bring(Speaker,Pos)
+	end
+	if commandPLAYER("yard") then
+		local Pos = CFrame.new(791, 98, 2498)
+		bring(Speaker,Pos)
+	end
 	if commandPLAYER("unloopkill") then
 		local r = FindPlayer(Arg2_P)
 		if Arg2_P=="all" then
@@ -3382,6 +3642,26 @@ function AdminChatted(Text,Speaker)
 			Msg(Speaker,"[ADMIN]: Player not found!")
 			NotFound()
 		end
+	end
+	if commandPLAYER("opendoors") then
+		local LastTeam =plr.TeamColor.Name
+		ChangeTeam(game.Teams.Guards)
+		wait(.7)
+		task.spawn(function()
+			local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
+			local Event = game:GetService("Workspace").Remote.ItemHandler
+			Event:InvokeServer(Arg_1)
+		end)
+		for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
+			if v then
+				if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+					firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.block.hitbox,0)
+					firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.block.hitbox,1)
+				end
+			end
+		end
+		wait(1)
+		Last_Team(LastTeam)
 	end
 	if commandPLAYER("criminal") then
 		local r = FindPlayer(Arg2_P)
@@ -3415,22 +3695,26 @@ function AdminChatted(Text,Speaker)
 	end
 	if commandPLAYER("cmds") then
 		Msg(Speaker,CmdsList)
+		wait(.1)
+		Msg(Speaker,CmdsList2)
 	end
 end
 
 plr:GetMouse().Button1Up:Connect(function()
 	local Target = plr:GetMouse().Target
-	if Target and Target.Parent and Target.Parent:FindFirstChildOfClass("Humanoid") and game:GetService("Players"):FindFirstChild(Target.Parent.Name) or game:GetService("Players"):FindFirstChild(Target.Parent.Parent.Name) then
-		local TargetModelPlr = game:GetService("Players"):FindFirstChild(Target.Parent.Name) or game:GetService("Players"):FindFirstChild(Target.Parent.Parent.Name)
-		if States.ClickArrest then
-			if TargetModelPlr.Team ~= game:GetService("Teams").Guards then
-				local ohInstance1 = Target
-				workspace.Remote.arrest:InvokeServer(ohInstance1)
+	if States.ClickArrest or States.ClickKill then
+		if Target and Target.Parent and Target.Parent:FindFirstChildOfClass("Humanoid") and game:GetService("Players"):FindFirstChild(Target.Parent.Name) or game:GetService("Players"):FindFirstChild(Target.Parent.Parent.Name) then
+			local TargetModelPlr = game:GetService("Players"):FindFirstChild(Target.Parent.Name) or game:GetService("Players"):FindFirstChild(Target.Parent.Parent.Name)
+			if States.ClickArrest then
+				if TargetModelPlr.Team ~= game:GetService("Teams").Guards then
+					local ohInstance1 = Target
+					workspace.Remote.arrest:InvokeServer(ohInstance1)
+				end
 			end
-		end
-		if States.ClickKill then
-			if TargetModelPlr.Team ~= game:GetService("Teams").Guards then
-				kill(TargetModelPlr)
+			if States.ClickKill then
+				if TargetModelPlr.Team ~= game:GetService("Teams").Guards then
+					kill(TargetModelPlr)
+				end
 			end
 		end
 	end
@@ -3446,4 +3730,3 @@ refresh()
 plr.PlayerGui.Home.fadeFrame.Visible = false--//black bar
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 Notif("Loaded! type !noinvite to disable discord invite",3)
-Notif("Welcome to Net Admin / Tiger admin Source",5)
