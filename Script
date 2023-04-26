@@ -1,12 +1,13 @@
 --[[
   _______ _____ _____ ______ _____             _____  __  __ _____ _   _ 
- |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE V10
+ |__   __|_   _/ ____|  ____|  __ \      /\   |  __ \|  \/  |_   _| \ | | PL LITE V11
     | |    | || |  __| |__  | |__) |    /  \  | |  | | \  / | | | |  \| |
     | |    | || | |_ |  __| |  _  /    / /\ \ | |  | | |\/| | | | | . ` |
     | |   _| || |__| | |____| | \ \   / ____ \| |__| | |  | |_| |_| |\  |
     |_|  |_____\_____|______|_|  \_\ /_/    \_\_____/|_|  |_|_____|_| \_|     
     Created by H17S3
     https://www.youtube.com/watch?v=cL-d_GOXa28
+    if you came here to skid off this, stop right now in the name of the law of america!1!!
 ]]
 
 repeat task.wait() until game:IsLoaded()
@@ -34,7 +35,7 @@ do--//Instances
 	RunService = game:GetService("RunService")
 	gethui=gethui or nil
 	SearchBar = Instance.new("TextBox")
-	Folder.Name = "Tiger_PL"
+	Folder.Name = "Net_Adm"
 	--
 	HasFireTouch = false
 	unloaded=false
@@ -67,6 +68,7 @@ do
 		OnePunch = false,
 		AntiTouch = false,
 		ClickKill = false,
+		noclip = false,
 		AntiShield = false,
 		AutoItems = false,
 		AntiArrest = false,
@@ -78,7 +80,7 @@ do
 	Temp = {}
 	Whitelisted_ITEMS = {}
 end
-if game:FindFirstChild("Tiger_PL") then
+if game:FindFirstChild("Net_Adm") then
 	ScreenGui:Destroy()
 	unloaded = true
 	return
@@ -583,7 +585,7 @@ do --//Main Gui
 		TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
 		TextLabel.Size = UDim2.new(0, 200, 0, 32)
 		TextLabel.Font = Enum.Font.Cartoon
-		TextLabel.Text = "Net Hub Adm V9"
+		TextLabel.Text = "Tiger-admin v1.1 PL"
 		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TextLabel.TextScaled = true
 		TextLabel.TextSize = 14.000
@@ -616,7 +618,7 @@ do --//Main Gui
 	end
 end
 do--//Command handler
-	Prefix = ","
+	Prefix = "!"
 	CommandsGot = 0
 	TableCommands={}
 	CommandsRawList = {}
@@ -647,23 +649,27 @@ ValidCommand=function(Name)
 	return nil
 end
 Execute_Command = function(Name,Raw)
-	task.spawn(function()
-		if unloaded then return end
-		Name = Name:lower()
-		local Saved_Name = Name
-		if not string.find(Saved_Name," ") then
-			Saved_Name = Saved_Name.." "
-		end
-		if Verify_Command(Name) then
-			for i,v in pairs(TableCommands) do
-				if v then
-					if v["Name"]:lower() == Saved_Name:split(" ")[1] then
+	local p = nil
+	if unloaded then return end
+	Name = Name:lower()
+	local Saved_Name = Name
+	if not string.find(Saved_Name," ") then
+		Saved_Name = Saved_Name.." "
+	end
+	if Verify_Command(Name) then
+		for i,v in pairs(TableCommands) do
+			if v then
+				if v["Name"]:lower() == Saved_Name:split(" ")[1] then
+					p = true
+					coroutine.wrap(function()
 						v["Callback"](Raw)
-					end
+					end)()
 				end
 			end
 		end
-	end)
+		print(p)
+		return p
+	end
 end
 FindPlayer = function(h,h2)
 	if string.lower(h) == "me" then
@@ -733,6 +739,7 @@ do
 	Temp.Waiting2 = nil
 	Temp.Waiting = false
 	Temp.Esps={}
+	Temp.RankCooldown = false
 end
 
 do
@@ -908,6 +915,147 @@ do
 		if Ignore ~= true then
 			plr.Character:SetPrimaryPartCFrame(Ignore or saved)
 		end
+	end
+	function Fly(Enable,SpeedNew)
+		if Enable then
+			if Temp.FlyConnection then
+				return
+			end
+			Temp.FlyConnection= RunService.Heartbeat:Connect(function()
+				if true then
+					plr.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(plr.Character:WaitForChild("HumanoidRootPart").Position, plr.Character:WaitForChild("HumanoidRootPart").Position + Vector3.new(Mouse.Hit.lookVector.x, Mouse.Hit.lookVector.Y, Mouse.Hit.lookVector.z))
+				end
+			end)
+
+			local Speed = tonumber(SpeedNew)/2 or .1
+			local Y = 1
+			local State = 8
+			local StartingPosition = plr.Character.PrimaryPart.CFrame
+
+			local Keys = {
+				w = false,
+				a = false,
+				s = false,
+				d = false,
+			}
+			local function MoveBy(a)
+				if not Temp.FlyConnection then
+					return
+				end
+				plr.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame *a
+			end
+			Mouse.KeyUp:Connect(function(Key)
+				if Key and Keys[Key:lower()] ~= nil and Temp.FlyConnection then
+					Keys[Key:lower()] = false
+				end
+			end)
+			Mouse.KeyDown:Connect(function(Key)
+				if Key and Keys[Key:lower()] ~= nil and Temp.FlyConnection then
+					Keys[Key:lower()] = true
+				end
+			end)
+
+			plr.Character.HumanoidRootPart.Changed:Connect(function()
+				if true and Temp.FlyConnection then
+					plr.Character.HumanoidRootPart.Velocity = Vector3.new(0,Y,0)
+				end
+			end)
+			RunService.RenderStepped:Connect(function()
+				if true and Temp.FlyConnection then
+					plr.Character.HumanoidRootPart.Velocity = Vector3.new(0,Y,0)
+					if Keys.w then
+						MoveBy(CFrame.new(0,0,-Speed))
+					end
+					if Keys.a then
+						MoveBy(CFrame.new(-Speed,0,0))
+					end
+					if Keys.s then
+						MoveBy(CFrame.new(0,0,Speed))
+					end
+					if Keys.d then
+						MoveBy(CFrame.new(Speed,0,0))
+					end
+				end
+			end)
+			task.spawn(function()
+				repeat wait(.4)
+					if unloaded then
+						break
+					end
+					pcall(function()
+						plr.Character:FindFirstChildOfClass("Humanoid").StateChanged:Connect(function()
+							if not Temp.FlyConnection then
+								return
+							end
+							plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(State)
+						end)
+						plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(State)
+					end)
+				until not Temp.FlyConnection
+			end)
+			local function rwait(a)
+				if true then
+					wait(a)
+				end
+			end
+			local function rwait2()
+				if true then
+					task.wait()
+				end
+			end
+			task.spawn(function()
+				repeat wait(1)
+					if unloaded then
+						break
+					end
+					if true and Temp.FlyConnection then
+						pcall(function()
+							State = 7--//Landed
+							rwait(.1)
+							State=8--//Running
+							rwait(1)
+							State = 3--//Jumping
+							rwait2()
+							State = 5--//Falling
+						end)
+					end
+				until not Temp.FlyConnection
+
+			end)
+			local function onInputBegan(input, _gameProcessed)
+				if input.KeyCode == Enum.KeyCode.Space then
+					Y = 20
+				end
+				if input.KeyCode == Enum.KeyCode.LeftShift then
+					Y = -20
+				end
+			end
+			local function onInputEnded(input, _gameProcessed)
+
+				if input.KeyCode == Enum.KeyCode.Space then
+					Y = 1
+				end
+				if input.KeyCode == Enum.KeyCode.LeftShift then
+					Y = 1
+				end
+			end
+			UserInputService.InputBegan:Connect(onInputBegan)
+
+			UserInputService.InputEnded:Connect(onInputEnded)
+
+		else
+			pcall(function()
+				Temp.FlyConnection:Disconnect()
+				Temp.FlyConnection=nil
+			end)
+			pcall(function()
+				wait(.1)
+				plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(18)
+				wait(.04)
+				char:FindFirstChildOfClass("Humanoid"):ChangeState(8)
+			end)
+		end
+
 	end
 	function All_Guns()
 		local saved = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
@@ -1150,37 +1298,6 @@ do
 		MoveTo(a)
 
 	end
-	function Crash()
-		local Bullets = {}
-		local Player = plr
-		for i = 1,10 do
-			Bullets[#Bullets+1] = {
-				["RayObject"] = Ray.new(Vector3.new(990.272583, 101.489975, 2362.74878), Vector3.new(-799.978333, 0.23157759, -5.88794518)),
-				["Distance"] = 198.9905242919922,
-				["Cframe"] = CFrame.new(894.362549, 101.288307, 2362.53491, -0.0123058055, 0.00259522465, -0.999920964, 3.63797837e-12, 0.999996722, 0.00259542116, 0.999924302, 3.19387436e-05, -0.0123057645),
-			}
-		end
-		if #game:GetService("Teams").Guards:GetPlayers() >7 then
-			GetGun("M9")
-		else
-			ChangeTeam(game.Teams.Guards)
-		end
-		repeat task.wait() until Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
-		game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9"))
-		while task.wait() do
-			local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
-			if not Gun or not GetHumanoid() or GetHumanoid() and GetHumanoid().Health <1  then
-				task.wait(4)--//Ping cool down
-				break
-			end
-			coroutine.wrap(function()
-				game:GetService("ReplicatedStorage").ShootEvent:FireServer(Bullets,Gun)
-			end)()
-			coroutine.wrap(function()
-				game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Gun)
-			end)()
-		end
-	end
 	function ReturnGun()
 		for i,v in pairs(plr.Backpack:GetChildren()) do
 			if v and v:IsA("Tool") and v:FindFirstChildOfClass("ModuleScript") then
@@ -1420,7 +1537,7 @@ do
 			if not Handcuffs or not Handcuffs:FindFirstChild("Handle") or not Handcuffs.Handle:FindFirstChildOfClass("SpecialMesh") then
 				return Notif("Failed to bring due to a rare error!")
 			end
-			
+
 			player.Character:FindFirstChildOfClass("Humanoid"):RemoveAccessories()
 			if Type ~= "a" then
 				Handcuffs.Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
@@ -1469,17 +1586,21 @@ do
 				if Handcuffs and Handcuffs:FindFirstChild("Handle") then
 					task.spawn(function()
 						_MAX+=1
-						MoveTo(Goto)
-						player.Character:SetPrimaryPartCFrame(Handcuffs.Handle.CFrame)
+						if player.Character and player.Character.PrimaryPart then
+							MoveTo(Goto)
+							player.Character:SetPrimaryPartCFrame(Handcuffs.Handle.CFrame)
+						end
 						wait(.1)
 					end)
 				end
 				if Handcuffs and Handcuffs:FindFirstChild("Handle") then
 					touch(GetPlayersPart(player),Handcuffs.Handle)
-					if Extra == "crim" then
-						crimpad.CFrame = player.Character:GetPrimaryPartCFrame()
-						touch(GetPlayersPart(player),crimpad)
-					end
+					pcall(function()
+						if Extra == "crim" then
+							crimpad.CFrame = player.Character:GetPrimaryPartCFrame()
+							touch(GetPlayersPart(player),crimpad)
+						end
+					end)
 				end
 			until Handcuffs.Parent ~= plr.Character or _MAX>200
 			if pos then
@@ -1562,17 +1683,6 @@ do
 			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
 		end
 	end,"Rejoins the server")
-	Add_Command("rj",function(Args)
-		local Args = GetArgs(Args)
-		Notif("Rejoining...")
-		wait(.3)
-		if #game:GetService("Players"):GetPlayers() ==1 then
-			game:GetService("Players").LocalPlayer:Kick("Please wait.")
-			game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
-		else
-			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
-		end
-	end,"Rejoins the server")
 	Add_Command("opendoors",function(Args)
 		local Args = GetArgs(Args)
 		local LastTeam =plr.TeamColor.Name
@@ -1619,11 +1729,6 @@ do
 		keycard()
 	end,"true",true)
 	Add_Command("btools",function(Args)
-		local Args = GetArgs(Args)
-		Instance.new("HopperBin",plr.Backpack).BinType = 3
-		Instance.new("HopperBin",plr.Backpack).BinType = 4
-	end,"client sided btools that you can only see")
-	Add_Command("bt",function(Args)
 		local Args = GetArgs(Args)
 		Instance.new("HopperBin",plr.Backpack).BinType = 3
 		Instance.new("HopperBin",plr.Backpack).BinType = 4
@@ -1689,15 +1794,11 @@ do
 		local Args = GetArgs(Args)
 		GetGun("Remington 870")
 	end,"Gets a shotgun")
+	Add_Command("rj",function(Args)
+		local Args = GetArgs(Args)
+		Execute_Command("!rejoin","!rejoin")
+	end,"true",true)
 	Add_Command("refresh",function(Args)
-		local Args = GetArgs(Args)
-		refresh()
-	end,"Respawns your character")
-	Add_Command("re",function(Args)
-		local Args = GetArgs(Args)
-		refresh()
-	end,"Respawns your character")
-	Add_Command("r",function(Args)
 		local Args = GetArgs(Args)
 		refresh()
 	end,"Respawns your character")
@@ -1731,12 +1832,10 @@ do
 			until Done
 		end)
 	end,"Brings a car to your location")
-	Add_Command("crashserver",function(Args)
-		Crash()
-	end,"Attempts to shutdown the server")
-	Add_Command("disconnect",function(Args)
-		Crash()
-	end,"Attempts to shutdown the server")
+	Add_Command("re",function(Args)
+		local Args = GetArgs(Args)
+		Execute_Command("!refresh","!refresh")
+	end,"true",true,true,true)
 	Add_Command("godmode",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"Godmode")
@@ -1812,37 +1911,10 @@ do
 			wait()
 			workspace.CurrentCamera.CameraSubject = plr.Character:FindFirstChildOfClass("Humanoid")
 		end
-		Notif("Net Hub Adn is now unloaded, see you soon!")
+		Notif("Tiger admin is now unloaded, see you soon!")
 	end,"Unloads everything")
 
 	Add_Command("kill",function(Args)
-		local Args = GetArgs(Args)
-		local Check1 = function(ar)
-			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
-				if v and v.Name:lower() == ar:lower() then
-					return v
-				end
-			end
-			return nil
-		end
-		if Args[2] then
-			if Args[2] == "all" then
-				Kill_All()
-			elseif Check1(Args[2])  then
-				Kill_All(Check1(Args[2]))
-			else
-				local r = FindPlayer(Args[2])
-				if r then
-					kill(r)
-				else
-					NotFound()
-				end
-			end
-		else
-			Notif("Missing arg2 !kill player")
-		end
-	end,"kills a player","PLAYER_COMMAND")
-	Add_Command("k",function(Args)
 		local Args = GetArgs(Args)
 		local Check1 = function(ar)
 			for i,v in pairs(game:GetService("Teams"):GetChildren()) do
@@ -1900,43 +1972,7 @@ do
 			NotFound()
 		end
 	end,"loop kills a player","PLAYER_COMMAND")
-	Add_Command("lk",function(Args)
-		local Args = GetArgs(Args)
-		local r =FindPlayer(Args[2])
-		if Args[2]=="all" then
-			task.spawn(function()
-				if Temp.LkAll==false then
-					Temp.LkAll = true
-					repeat wait()
-						Kill_All()
-					until Temp.LkAll == nil
-				end
-			end)
-			return
-		end
-		if r then
-			loopkilling[#loopkilling+1]=r.Name
-			Notif("loop killing "..r.Name)
-		else
-			NotFound()
-		end
-	end,"loop kills a player","PLAYER_COMMAND")
 	Add_Command("unloopkill",function(Args)
-		local Args = GetArgs(Args)
-		local r =FindPlayer(Args[2])
-		if Args[2]=="all" then
-			Notif("Unloop killed all")
-			Temp.LkAll = nil
-			return
-		end
-		if r then
-			table.remove(loopkilling,table.find(loopkilling,r.Name))
-			Notif("unlooped "..r.Name)
-		else
-			NotFound()
-		end
-	end,"unloop kills a player","PLAYER_COMMAND")
-	Add_Command("unlk",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if Args[2]=="all" then
@@ -1961,27 +1997,7 @@ do
 			NotFound()
 		end
 	end,"Cant harm that player with commands","PLAYER_COMMAND")
-	Add_Command("wl",function(Args)
-		local Args = GetArgs(Args)
-		local r =FindPlayer(Args[2])
-		if r then
-			Whitelisted[#Whitelisted+1]=r.Name
-			Notif("whitelisted "..r.Name)
-		else
-			NotFound()
-		end
-	end,"Cant harm that player with commands","PLAYER_COMMAND")
 	Add_Command("unwhitelist",function(Args)
-		local Args = GetArgs(Args)
-		local r =FindPlayer(Args[2])
-		if r then
-			table.remove(Whitelisted,table.find(Whitelisted,r.Name))
-			Notif("unwhitelisted "..r.Name)
-		else
-			NotFound()
-		end
-	end,"unwhitelists a player","PLAYER_COMMAND")
-	Add_Command("unwl",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
@@ -1999,44 +2015,13 @@ do
 		end
 		Notif(Found,3)
 	end,"Shows you all the players you admined")
-	Add_Command("rankeds",function(Args)
-		local Args = GetArgs(Args)
-		local Found = ""
-		for i,v in pairs(States.Admined) do
-			Found = Found..v.." "
-		end
-		Notif(Found,3)
-	end,"Shows you all the players you admined")
 	Add_Command("autoadmin",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say ,cmds to get started!")
-			SavedAdmins[#SavedAdmins+1] = r.Name
-			if writefile and readfile then
-				local New = {}
-				local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
-				for i,v in pairs(Content) do
-					if v then
-						table.insert(New,v)
-					end
-				end
-				table.insert(New,r.Name)
-				writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
-			end
-		else
-			NotFound()
-		end
-	end,"when you execute script it saves all admins","PLAYER_COMMAND")
-	Add_Command("autorank",function(Args)
-		local Args = GetArgs(Args)
-		local r =FindPlayer(Args[2])
-		if r then
-			States.Admined[#States.Admined+1]=r.Name
-			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say ,cmds to get started!")
+			Msg(r,"You have been admined say !cmds to get started!")
 			SavedAdmins[#SavedAdmins+1] = r.Name
 			if writefile and readfile then
 				local New = {}
@@ -2073,44 +2058,13 @@ do
 			writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
 		end
 	end,"removes autoadmin from a player","PLAYER_COMMAND")
-	Add_Command("unautorank",function(Args)
-		local Args = GetArgs(Args)
-		if writefile and readfile then
-			local Content = game:GetService("HttpService"):JSONDecode(readfile("Tiger_Admin/SavedAdmins.json"))
-			local Found = FindString(Args[2],Content)
-			local New = {}
-			if Found then
-				for i,v in pairs(Content) do
-					warn(v)
-					if v and v ~= Found then
-						table.insert(New,v)
-					else
-						warn("removed")
-					end
-				end
-				Notif("Removed admin from player")
-			end
-			writefile("Tiger_Admin/SavedAdmins.json",game:GetService("HttpService"):JSONEncode(New))
-		end
-	end,"removes autoadmin from a player","PLAYER_COMMAND")
 	Add_Command("admin",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
 		if r then
 			States.Admined[#States.Admined+1]=r.Name
 			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say ,cmds to get started!")
-		else
-			NotFound()
-		end
-	end,"Admins a player","PLAYER_COMMAND")
-	Add_Command("rank",function(Args)
-		local Args = GetArgs(Args)
-		local r =FindPlayer(Args[2])
-		if r then
-			States.Admined[#States.Admined+1]=r.Name
-			Notif("Admined "..r.Name)
-			Msg(r,"You have been admined say ,cmds to get started!")
+			Msg(r,"You have been admined say !cmds to get started!")
 		else
 			NotFound()
 		end
@@ -2230,37 +2184,7 @@ do
 			NotFound()
 		end
 	end,"Admins a player","PLAYER_COMMAND")
-	Add_Command("unrank",function(Args)
-		local Args = GetArgs(Args)
-		local r = Args[2]
-		if States.Admined and r then
-			table.remove(States.Admined,table.find(States.Admined,r.Name))
-			Notif("Unadmined "..r.Name)
-		else
-			NotFound()
-		end
-	end,"Admins a player","PLAYER_COMMAND")
 	Add_Command("bring",function(Args)
-		local Args = GetArgs(Args)
-		if Args[2] == "all" then
-			local pos = getpos()
-			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-				if v and v~= plr then
-					bring(v,pos)
-				end
-			end
-			wait()
-			MoveTo(pos)
-		else
-			local r = FindPlayer(Args[2])
-			if r then
-				bring(r)
-			else
-				NotFound()
-			end
-		end
-	end,"Brings a player to you","PLAYER_COMMAND")
-	Add_Command("get",function(Args)
 		local Args = GetArgs(Args)
 		if Args[2] == "all" then
 			local pos = getpos()
@@ -2307,13 +2231,6 @@ do
 			plr.Character:FindFirstChildOfClass("Humanoid").JumpPower = r
 		end
 	end,"jumppower what else do you think","NUMBER_COMMAND")
-	Add_Command("jp",function(Args)
-		local Args = GetArgs(Args)
-		local r = Args[2]
-		if r and tonumber(r) then
-			plr.Character:FindFirstChildOfClass("Humanoid").JumpPower = r
-		end
-	end,"jumppower what else do you think","NUMBER_COMMAND")
 	Add_Command("speed",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
@@ -2321,23 +2238,7 @@ do
 			plr.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = r
 		end
 	end,"Speed what else do you think","NUMBER_COMMAND")
-	Add_Command("sd",function(Args)
-		local Args = GetArgs(Args)
-		local r = Args[2]
-		if r and tonumber(r) then
-			plr.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = r
-		end
-	end,"Speed what else do you think","NUMBER_COMMAND")
 	Add_Command("goto",function(Args)
-		local Args = GetArgs(Args)
-		local r = FindPlayer(Args[2])
-		if r then
-			MoveTo(r.Character["Head"].CFrame)
-		else
-			NotFound()
-		end
-	end,"teleports to a player")
-	Add_Command("to",function(Args)
 		local Args = GetArgs(Args)
 		local r = FindPlayer(Args[2])
 		if r then
@@ -2497,10 +2398,88 @@ do
 			end
 		end
 	end,"Arrests a person or all","PLAYER_COMMAND")
+	Add_Command("noclip",function(Args)
+		local Args = GetArgs(Args)
+		Toggle(Args[2],"noclip")
+		if States.noclip then
+			pcall(function()
+				Temp.Noclipping:Disconnect()
+				Temp.Noclipping = nil
+			end)
+			wait()
+			Temp.Noclipping = game:GetService("RunService").Stepped:Connect(function()
+				for i,v in pairs(plr.Character:GetDescendants()) do
+					if v and v:IsA("Part") or v:IsA("MeshPart") and v.CanCollide and unloaded == false then
+						v.CanCollide = false
+					end
+				end
+			end)
+		else
+			pcall(function()
+				Temp.Noclipping:Disconnect()
+				Temp.Noclipping = nil
+			end)
+			wait()
+			refresh()
+		end
+	end,"Clip though walls like they don't exist","TOGGLE_COMMAND")
+	Add_Command("fly",function(Args)
+		local Args = GetArgs(Args)
+		local Speed = 1
+		Notif("Fly has been enabled!")
+		pcall(function()
+			Temp.FlyConnection:Disconnect()
+			Temp.FlyConnection=nil
+		end)
+		Fly(false)
+		wait()
+		Fly(true,Speed)
+	end,"Fly like a bird! [PC ONLY]")
+	Add_Command("unfly",function(Args)
+		local Args = GetArgs(Args)
+		pcall(function()
+			Temp.FlyConnection:Disconnect()
+			Temp.FlyConnection=nil
+		end)
+		Fly(false)
+		Notif("Fly has been disabled!")
+	end,"Makes your character stop flying")
+	Add_Command("clip",function(Args)
+		local Args = GetArgs(Args)
+		States.noclip = false
+		pcall(function()
+			Temp.Noclipping:Disconnect()
+			Temp.Noclipping = nil
+		end)
+		Notif("Noclip has been set to false")
+	end,"",true)
 	Add_Command("autore",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"autore")
 	end,"",true)
+	Add_Command("addnuke",function(Args)
+		local Args = GetArgs(Args)
+		local Player = FindPlayer(Args[2])
+		if Player then
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("!!!A NUKE HAS BEEN PLACED ON "..Player.Name.." KILLING HIM WILL GET EVERYONE DEAD!!!", "ALL")
+			repeat task.wait()
+				if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") and Player.Character:FindFirstChildOfClass("Humanoid").Health <1 then
+					break
+				end
+			until not game
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Player.Name.." IS DEAD NUKE LAUNCHING!!!", "ALL")
+			wait(1.5)
+			--//This is what I call perfect work 
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("LAUNCHING IN 3", "ALL")
+			wait(1.5)
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("LAUNCHING IN 2", "ALL")			
+			wait(1.5)
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("LAUNCHING IN 1", "ALL")
+			wait(2)
+			Kill_All()
+			Notif("Nuke from player has been removed.")
+		end
+	end,"If player dies everyone dies","PLAYER_COMMAND")
 	Add_Command("antibring",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"Antibring")
@@ -2536,27 +2515,6 @@ do
 		local Args = GetArgs(Args)
 		ChangeTeam(game.Teams.Guards)
 	end,"puts you into guards team")
-	Add_Command("lag",function(Args)
-		local Args = GetArgs(Args)
-		GetGun("Remington 870")
-		wait(.7)
-		local T = {}
-		for i =1,100 do
-			T[#T+1] = unpack({
-				["RayObject"] = Ray.new(Vector3.new(780.852478, 99.4999161, 2568.36914), Vector3.new(308.161377, -90.2463608, -238.520844)),
-				["Distance"] = 15.429909706115723,
-				["Cframe"] = CFrame.new(790.130249, 97.1738739, 2562.07666, -0.683907807, 0.18761155, 0.705033362, 0, 0.966370463, -0.257154137, -0.729568481, -0.175869718, -0.660908222),
-				["Hit"] = workspace:FindFirstChildOfClass("Part")
-			})
-		end
-		local ohInstance2 = game:GetService("Players").LocalPlayer.Backpack["Remington 870"]
-
-		for i =1,30 do
-			task.spawn(function()
-				game:GetService("ReplicatedStorage").ShootEvent:FireServer(T, ohInstance2)
-			end)
-		end
-	end,"lags the server")
 	Add_Command("inmate",function(Args)
 		local Args = GetArgs(Args)
 		ChangeTeam(game.Teams.Inmates)
@@ -2910,8 +2868,8 @@ do
 	--end of teleports
 	Add_Command("allcmds",function(Args) 
 		local Args = GetArgs(Args);local Pos  = CFrame.new(916, 79, 2311)
-		Notif("Net Hub admin has "..tostring(CommandsGot).." commands in total!")
-	end,"Tells you how much commands Net Hub admin has")
+		Notif("Tiger admin has "..tostring(CommandsGot).." commands in total!")
+	end,"Tells you how much commands tiger admin has")
 end
 do
 	local Check_Prefix = function(TXT)
@@ -2932,12 +2890,17 @@ do
 			if Check_Prefix(CommandBar.Text) == "Not" then
 				local TextGot = CommandBar.Text
 				CommandBar.Text = ""
-				Execute_Command(Prefix..TextGot:lower(),Prefix..TextGot:lower())
-
+				local Executed = Execute_Command(Prefix..TextGot:lower(),Prefix..TextGot:lower())
+				if not Executed then
+					Notif("Unknown command!")
+				end
 			else
 				local TextGot = CommandBar.Text
 				CommandBar.Text = ""
-				Execute_Command(TextGot,TextGot)
+				local Executed =Execute_Command(TextGot,TextGot)
+				if not Executed then
+					Notif("Unknown command!")
+				end
 			end
 		end
 	end)
@@ -3018,20 +2981,31 @@ do
 	end)
 
 end
-plr.CharacterAdded:Connect(function(char)
+plr.CharacterAdded:Connect(function(NewChar)
 	if unloaded then return end
 	Temp.Respawned_132 = true
+	char = NewChar
 	task.spawn(function()
 		--//Antibring
 		if States.Antibring then
 			char.ChildAdded:Connect(function(a)
-				if unloaded then return end
-				if a and a:IsA("Tool") and not table.find(Whitelisted_ITEMS,a) and not a:FindFirstChild("ISWHITELISTED") and not unloaded then
+				if unloaded or not a then return end
+				if a:IsA("Tool") and not table.find(Whitelisted_ITEMS,a) and not a:FindFirstChild("ISWHITELISTED") then
 					plr.Character:FindFirstChild("HumanoidRootPart").Anchored = true
 					a:Destroy()
-					task.wait()
-					plr.Character:FindFirstChild("HumanoidRootPart").Anchored = false
-					game:GetService("Debris"):AddItem(a,0)
+					task.spawn(function()
+						repeat
+							game:GetService("RunService").Stepped:Wait()
+							a:Destroy()
+						until not a or a and a.Parent == nil
+					end)
+					task.spawn(function()
+						task.wait()
+						plr.Character:FindFirstChild("HumanoidRootPart").Anchored = false
+						pcall(function()
+							game:GetService("Debris"):AddItem(a,0)
+						end)
+					end)
 				end
 			end)
 		end
@@ -3462,16 +3436,22 @@ end
 
 function AdminChatted(Text,Speaker)
 	Speaker = game:GetService("Players"):FindFirstChild(Speaker)
-	if unloaded then return end
+	if unloaded or Temp.RankCooldown then return end
 	local TXT = string.lower(Text)
 	local SPLITED = TXT:split(" ")
 	Arg1_P = SPLITED[1]
-	local CmdsList = "[Net Admin 🖥️]: ,bring player, ,cmds, ,criminal player, ,goto player, ,kill [player,all], ,fling [player], ,car, ,loopkill [player]"
-	local CmdsList2 = "[Net Admin 🖥️]: ,unloopkill [player], ,tase [player,all], ,yard, ,crimbase, ,armory, ,prison, ,opendoors, ,cuffs [player]"
+	local CmdsList = "[Net Hub Adm🪟]: /bring player, /cmds, /criminal player, /goto player, /kill [player,all], /fling [player], /car, /loopkill [player]"
+	local CmdsList2 = "[Net Hub Adm🪟]: /unloopkill [player], /tase [player,all], /yard, /crimbase, /armory, /prison, /opendoors, /cuffs [player]"
+        local CmdsList3 = "[Net Hub Adm🪟]: Dc: dsc.gg/NYxgXzt8aK (Net Hub 🚀)"
 
 	local Arg2_P = SPLITED[2]
 	local Arg3_P = SPLITED[3]
 	local Arg4_P = SPLITED[4]
+	Temp.RankCooldown = true
+	task.spawn(function()
+		wait(.7852)
+		Temp.RankCooldown = false
+	end)
 	if commandPLAYER("car") then
 		local org = getpos()
 		MoveTo(Speaker.Character:GetPrimaryPartCFrame())
@@ -3630,16 +3610,16 @@ function AdminChatted(Text,Speaker)
 		local r = FindPlayer(Arg2_P)
 		if r then
 			if r.Character:FindFirstChildOfClass("Humanoid") and r.Character:FindFirstChildOfClass("Humanoid").Health <1 then
-				Msg(Speaker,"[ADMIN]: Player is dead please try again.")
+				Msg(Speaker,"[Net Hub Adm🪟]: Player is dead please try again.")
 				return
 			end
 			if not Speaker.Character then
-				Notif("Please try again (Character not found).")
+				Notif("[Net Hub Adm🪟]: Please try again (Character not found).")
 				return
 			end
 			bring(r,Speaker.Character:GetPrimaryPartCFrame()*CFrame.new(0,5,0))
 		else
-			Msg(Speaker,"[ADMIN]: Player not found!")
+			Msg(Speaker,"[Net Hub Adm🪟]: Player not found!")
 			NotFound()
 		end
 	end
@@ -3667,16 +3647,16 @@ function AdminChatted(Text,Speaker)
 		local r = FindPlayer(Arg2_P)
 		if r then
 			if r.Character:FindFirstChildOfClass("Humanoid") and r.Character:FindFirstChildOfClass("Humanoid").Health <1 then
-				Msg(Speaker,"[ADMIN]: Player is dead please try again.")
+				Msg(Speaker,"[Net Hub Adm🪟]: Player is dead please try again.")
 				return
 			end
 			if not Speaker.Character then
-				Notif("Please try again (Character not found).")
+				Notif("[Net Hub Adm🪟]: Please try again (Character not found).")
 				return
 			end
 			bring(r,r.Character:GetPrimaryPartCFrame()*CFrame.new(0,1,0),nil,"crim")
 		else
-			Msg(Speaker,"[ADMIN]: Player not found!")
+			Msg(Speaker,"[Net Hub Adm🪟]: Player not found!")
 			NotFound()
 		end
 	end
@@ -3684,12 +3664,12 @@ function AdminChatted(Text,Speaker)
 		local r = FindPlayer(Arg2_P)
 		if r then
 			if not Speaker.Character then
-				Notif("Please try again (Character not found).")
+				Notif("[Net Hub Adm🪟]: Please try again (Character not found). [Error🪟]")
 				return
 			end
 			bring(Speaker,r.Character:GetPrimaryPartCFrame()*CFrame.new(0,1,0),nil,"crim")
 		else
-			Msg(Speaker,"[ADMIN]: Player not found!")
+			Msg(Speaker,"[Net Hub Adm🪟]: Player not found![Error🪟]")
 			NotFound()
 		end
 	end
