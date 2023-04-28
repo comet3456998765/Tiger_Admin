@@ -1853,10 +1853,6 @@ do
 		local Args = GetArgs(Args)
 		Execute_Command("!refresh","!refresh")
 	end,"true",true,true,true)
-        Add_Command("r",function(Args)
-		local Args = GetArgs(Args)
-		Execute_Command("!refresh","!refresh")
-	end,"true",true,true,true)
 	Add_Command("godmode",function(Args)
 		local Args = GetArgs(Args)
 		Toggle(Args[2],"Godmode")
@@ -2252,9 +2248,9 @@ do
 			Reload_Guns[#Reload_Guns+1]=Tool
 			UneqTools()
 		else
-			Notif("You need to hold the tool you want to mod!")
+			Notif("Necesitas un arma para poder modificarla")
 		end
-	end,"Shoot very fast")
+	end,"Disparas muy rapido")
 	Add_Command("infammo",function(Args)
 		local Args = GetArgs(Args)
 		if plr.Character:FindFirstChildOfClass("Tool") then
@@ -2270,15 +2266,27 @@ do
 			cc["CurrentAmmo"] = math.huge
 			UneqTools()
 		else
-			Notif("You need to hold the tool you want to mod!")
+			Notif("Necesitas un arma para poder modificarla")
 		end
-	end,"makes your gun have inf ammo")
+	end,"Hara que tu arma tenga balas infinitas")
 	Add_Command("unadmin",function(Args)
 		local Args = GetArgs(Args)
 		local r = Args[2]
 		if States.Admined and r then
 			table.remove(States.Admined,table.find(States.Admined,r.Name))
 			Notif("Ya no tiene admin: "..r.Name)
+			print("Admremoved")
+		else
+			NotFound()
+		end
+	end,"Removera el admin al jugador","PLAYER_COMMAND")
+        Add_Command("unrank",function(Args)
+		local Args = GetArgs(Args)
+		local r = Args[2]
+		if States.Admined and r then
+			table.remove(States.Admined,table.find(States.Admined,r.Name))
+			Notif("Ya no tiene admin: "..r.Name)
+			print("Admremoved")
 		else
 			NotFound()
 		end
@@ -3610,8 +3618,8 @@ function AdminChatted(Text,Speaker)
 	local TXT = string.lower(Text)
 	local SPLITED = TXT:split(" ")
 	Arg1_P = SPLITED[1]
-	local CmdsList = "[Net Malware 💉]: (Prefix: ,) bring player, cmds, criminal player, goto player, kill [player,all], fling [player], car, loopkill [player]"
-	local CmdsList2 = "[Net Malware 💉]: unloopkill [player], tase [player,all], yard, crimbase, armory, prison, opendoors, cuffs [player]"
+	local CmdsList = "[Net Malware]: (Prefix: ,) bring player, cmds, criminal player, goto player, kill [player,all], fling [player], car, loopkill [player]"
+	local CmdsList2 = "[Net Malware]: unloopkill [player], tase [player,all], yard, crimbase, armory, prison, opendoors, cuffs [player]"
         local Credits1 = "Scripter: H17S32, Traducido: Net Hub Main Dev, Modificado por: Net Hub Main Dev. No tenemos ninguna relacion con H17S32 💉"
 
 	local Arg2_P = SPLITED[2]
