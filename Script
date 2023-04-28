@@ -1641,7 +1641,7 @@ end
 do
 	--//Commands
 	function NotFound()
-		Notif("Player left or is not in server!")
+		Notif("Jugador no encontrado o dejo el servidor!")
 	end
 	function Toggle(a,b)
 		if not a then
@@ -2049,7 +2049,17 @@ do
 		else
 			NotFound()
 		end
-	end,"Cant harm that player with commands","PLAYER_COMMAND")
+	end,"Algunos comandos no afectaran a este jugador","PLAYER_COMMAND")
+        Add_Command("wl",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			Whitelisted[#Whitelisted+1]=r.Name
+			Notif("En la whitelist: "..r.Name)
+		else
+			NotFound()
+		end
+	end,"Algunos comandos no afectaran a este jugador","PLAYER_COMMAND")
 	Add_Command("unwhitelist",function(Args)
 		local Args = GetArgs(Args)
 		local r =FindPlayer(Args[2])
@@ -2059,7 +2069,17 @@ do
 		else
 			NotFound()
 		end
-	end,"unwhitelists a player","PLAYER_COMMAND")
+	end,"El jugador ya no estara en la whitelist","PLAYER_COMMAND")
+        Add_Command("unwl",function(Args)
+		local Args = GetArgs(Args)
+		local r =FindPlayer(Args[2])
+		if r then
+			table.remove(Whitelisted,table.find(Whitelisted,r.Name))
+			Notif("Ya no esta en la whitelist: "..r.Name)
+		else
+			NotFound()
+		end
+	end,"El jugador ya no estara en la whitelist","PLAYER_COMMAND")
 	Add_Command("admins",function(Args)
 		local Args = GetArgs(Args)
 		local Found = ""
