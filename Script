@@ -2631,7 +2631,7 @@ do
 		local Args = GetArgs(Args)
 		local Player = FindPlayer(Args[2])
 		if Player then
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("!!!A NUKE HAS BEEN PLACED ON "..Player.Name.." KILLING HIM WILL GET EVERYONE DEAD!!!", "ALL")
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("!!!Una bomba a sido plantada en "..Player.Name.." si lo matan todos van a morir!!!", "ALL")
 			repeat task.wait()
 				if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") and Player.Character:FindFirstChildOfClass("Humanoid").Health <1 then
 					break
